@@ -1,0 +1,20 @@
+group 'BattleShiPi'
+version '1.0-SNAPSHOT'
+
+apply plugin: 'java'
+apply plugin: 'application'
+
+sourceCompatibility = 1.8
+mainClassName = "ir.tiroon.battleshipi.Main"
+
+repositories {
+    mavenCentral()
+//    flatDir {
+//        dir = "build/libs"
+//    }
+}
+
+dependencies {
+    compile group: 'org.eclipse.paho', name: 'org.eclipse.paho.client.mqttv3', version: '1.2.0'
+}
+
