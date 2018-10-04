@@ -20,7 +20,7 @@ public abstract class Screen implements IMqttMessageListener {
 
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
-                points[i][j] = new Point(i, j, Color.of(0, 0, 0));
+                points[i][j] = new Point(i, j, Color.of(1, 1, 1));
             }
         }
 
@@ -68,9 +68,12 @@ public abstract class Screen implements IMqttMessageListener {
     public void showGlobeSight() {
         colorOfTheLastPointTurnedIntoGlobeSight = points[0][0].color;
         globeSight = points[0][0];
-
+        points[0][0].lightUp(Color.RED);
+        System.out.println("BMD::"+points[0][0].blinking);
         globeSightVisible = true;
         globeSight.startBlinking();
+        System.out.println("BMD::"+points[0][0].blinking);
+        System.out.println("BMD::"+globeSight.blinking);
         new Thread(joystickEventRunnable,"joystickEventThread").start();
     }
 

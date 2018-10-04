@@ -19,6 +19,7 @@ public class Point {
         this.y = y;
         this.color = color;
         lightUp();
+        System.out.println("X,Y"+x+":"+y+":"+color);
     }
 
     public Point(Point point) {
