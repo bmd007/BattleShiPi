@@ -61,11 +61,7 @@ public class Point {
 
     public void stopBlinking() {
         blinking = false;
-
-        blinkingThread.stop();
-
         lightUp(previousColor);
-        
     }
 
     private Runnable blinkingRunnable = () -> {
