@@ -12,12 +12,14 @@ public class Point {
     public int y;
     public Color color = Color.BLUE;
     public Boolean blinking = false;
+    private Color previousColor = Color.GREEN;
 
     @JsonCreator
     public Point(@JsonProperty("key") int x, @JsonProperty("key") int y, @JsonProperty("key") Color color) {
         this.x = x;
         this.y = y;
         this.color = color;
+        this.previousColor = color;
 //        lightUp();
     }
 
@@ -25,6 +27,11 @@ public class Point {
         this.x = point.x;
         this.y = point.y;
         this.color = point.color;
+        this.previousColor = point.getPreviousColor();
+    }
+
+    public Color getPreviousColor() {
+        return previousColor;
     }
 
     public void lightUp(Color color) {
@@ -42,18 +49,25 @@ public class Point {
     }
 
     public void startBlinking() {
+        previousColor = color;
         color = Color.BLUE;
         blinking = true;
-        System.out.println("Gs is blinking at:" + x + "::" + y);
-        new Thread(blinkingRunnable).start();
+        blinkingThread = new Thread(blinkingRunnable);
+        blinkingThread.start();
     }
+
+    Thread blinkingThread = null;
 
     public void stopBlinking() {
         blinking = false;
-        System.out.println("GS stopped blinking on:" + x + "::" + y);
+        lightUp(previousColor);
+        SenseHatUtil.waitFor(50);
+
+//        blinkingThread.stop();
     }
 
     private Runnable blinkingRunnable = () -> {
+
         while (blinking) {
             SenseHatUtil.senseHat.ledMatrix.setPixel(x, y, Color.of(0, 0, 0));
             SenseHatUtil.waitFor(30);
