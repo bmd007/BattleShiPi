@@ -18,7 +18,7 @@ public class Point {
         this.x = x;
         this.y = y;
         this.color = color;
-        lightUp();
+//        lightUp();
     }
 
     public Point(Point point) {
