@@ -34,7 +34,7 @@ public abstract class Screen implements IMqttMessageListener {
 
         tempPoint.stopBlinking();
         tempPoint.lightUp(colorOfTheLastPointTurnedIntoGlobeSight);
-        
+
         switch (direction) {
             case UP: {
                 if (tempY + 1 < 8) {
@@ -87,7 +87,7 @@ public abstract class Screen implements IMqttMessageListener {
                 applyJoystickEvent(SenseHatUtil.senseHat.joystick.waitForEvent());
 
         }
-    });
+    },"JoyStickEventThread");
 
     public abstract void pointSelected(Point point);
 
