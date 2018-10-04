@@ -11,7 +11,7 @@ public class Point {
     public int x;
     public int y;
     public Color color = Color.BLUE;
-    private boolean blinking = false;
+    private volatile boolean blinking = false;
     private Color previousColor = Color.GREEN;
 
     @JsonCreator
@@ -61,6 +61,7 @@ public class Point {
 
     public void stopBlinking() {
         setBlinking(false);
+       // SenseHatUtil.waitFor(200);
         lightUp(previousColor);
     }
 
