@@ -10,7 +10,7 @@ mainClassName = "ir.tiroon.battleshipi.Main"
 repositories {
    mavenCentral()
    flatDir {
-       dirs 'libs'
+      // dirs 'libs'
    }
 }
 
@@ -20,6 +20,6 @@ dependencies {
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: '2.9.7'
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.9.7'
 
-    compile name: 'java-executor-1.0-SNAPSHOT'
+    //compile name: 'java-executor-1.0-SNAPSHOT'
 }
 
