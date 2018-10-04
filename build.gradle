@@ -9,9 +9,9 @@ mainClassName = "ir.tiroon.battleshipi.Main"
 
 repositories {
    mavenCentral()
-   flatDir {
-      // dirs 'libs'
-   }
+//   flatDir {
+//      // dirs 'libs'
+//   }
 }
 
 dependencies {
