@@ -49,11 +49,11 @@ public abstract class Screen implements IMqttMessageListener {
                     globeSight = points[tempY - 1][tempX];
                 break;
             }
-            case LEFT: {
+            case RIGHT:{
                 if (tempX + 1 < 8)
                     break;
             }
-            case RIGHT: {
+            case LEFT: {
                 if (tempX - 1 > -1)
                     globeSight = points[tempY][tempX - 1];
                 break;

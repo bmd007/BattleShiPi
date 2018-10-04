@@ -27,12 +27,18 @@ public class Main {
         JoystickEvent event = SenseHatUtil.senseHat.joystick.waitForEvent();
             System.out.println("dir:"+event.getDirection());
             gs.stopBlinking();
-            gs.lightUp(Color.RED);
             SenseHatUtil.waitFor(2000);
+            gs.lightUp(Color.RED);
+            SenseHatUtil.waitFor(4000);
             gs.lightUp(Color.GREEN);
             gs = p2;
             gs.startBlinking();
-        SenseHatUtil.waitFor(8000);
+            SenseHatUtil.waitFor(2000);
+
+        SenseHatUtil.senseHat.ledMatrix.clear();
+
+        Screen s = new ScoreScreen();
+        s.showGlobeSight();
 
 
     }
