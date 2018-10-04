@@ -59,6 +59,7 @@ public abstract class Screen implements IMqttMessageListener {
 
     public void showGlobeSight() {
         globeSightVisible = true;
+        globeSight.lightUp(Color.BLUE);
         joystickEventThread.start();
     }
 
