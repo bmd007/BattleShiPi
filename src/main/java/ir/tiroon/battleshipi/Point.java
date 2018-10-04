@@ -36,6 +36,7 @@ public class Point {
 
     public void lightUp(Color color) {
         this.color = color;
+        previousColor = color;
         SenseHatUtil.senseHat.ledMatrix.setPixel(x, y, this.color);
     }
 

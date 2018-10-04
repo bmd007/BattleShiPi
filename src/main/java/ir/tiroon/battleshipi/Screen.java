@@ -14,8 +14,6 @@ public abstract class Screen implements IMqttMessageListener {
 
     boolean globeSightVisible = false;
 
-    Color colorOfTheLastPointTurnedIntoGlobeSight = Color.GREEN;
-
     public Screen() {
 
         for (int i = 0; i < 8; i++) {
@@ -33,8 +31,6 @@ public abstract class Screen implements IMqttMessageListener {
         int tempY = tempPoint.y;
 
         tempPoint.stopBlinking();
-
-        tempPoint.lightUp(colorOfTheLastPointTurnedIntoGlobeSight);
 
         switch (direction) {
             case UP: {
@@ -69,14 +65,12 @@ public abstract class Screen implements IMqttMessageListener {
             }
         }
 
-        colorOfTheLastPointTurnedIntoGlobeSight = globeSight.color;
         globeSight.startBlinking();
 
     }
 
 
     public void showGlobeSight() {
-        colorOfTheLastPointTurnedIntoGlobeSight = points[5][5].color;
         globeSight = points[5][5];
         points[5][5].lightUp(Color.RED);
         globeSightVisible = true;
