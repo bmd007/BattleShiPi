@@ -71,7 +71,7 @@ public abstract class Screen implements IMqttMessageListener {
 
         globeSightVisible = true;
         globeSight.startBlinking();
-        joystickEventThread.start();
+        new Thread(joystickEventRunnable,"joystickEventThread").start();
     }
 
     public void vanishGlobeSight() {
@@ -79,18 +79,15 @@ public abstract class Screen implements IMqttMessageListener {
     }
 
 
-    private Thread joystickEventThread = new Thread(new Runnable() {
-        @Override
-        public void run() {
+    private Runnable joystickEventRunnable = () -> {
 
-            while (globeSightVisible)
-                applyJoystickEvent(SenseHatUtil.senseHat.joystick.waitForEvent());
+        while (globeSightVisible)
+            applyJoystickEvent(SenseHatUtil.senseHat.joystick.waitForEvent());
 
 
-            System.out.println("joyStick thread finished");
+        System.out.println("joyStick thread finished");
 
-        }
-    },"JoyStickEventThread");
+    };
 
     public abstract void pointSelected(Point point);
 

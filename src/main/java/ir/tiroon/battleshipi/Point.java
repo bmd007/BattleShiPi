@@ -42,31 +42,25 @@ public class Point {
 
     public void startBlinking() {
         color = Color.BLUE;
-        synchronized (blinking) {
-            blinking = true;
-        }
-        blinkingThread.start();
+        blinking = true;
+
+        new Thread(blinkingRunnable,"blinkingRunnable").start();
     }
 
-    public void stopBlinking(){
-        synchronized (blinking) {
-            blinking = false;
-        }
+    public void stopBlinking() {
+        blinking = false;
     }
 
-    private Thread blinkingThread = new Thread(
-            new Runnable() {
-                @Override
-                public void run() {
-                    while (blinking) {
-                        SenseHatUtil.senseHat.ledMatrix.setPixel(x, y, Color.of(0, 0, 0));
-                        SenseHatUtil.waitFor(70);
-                        SenseHatUtil.senseHat.ledMatrix.setPixel(x, y, Color.BLUE);
-                        SenseHatUtil.waitFor(50);
-                    }
-                    System.out.println("Blinking thread finished");
-                }
-            }
-    ,"BlinkingThread");
+    private Runnable blinkingRunnable = () -> {
+
+        while (blinking) {
+            SenseHatUtil.senseHat.ledMatrix.setPixel(x, y, Color.of(0, 0, 0));
+            SenseHatUtil.waitFor(70);
+            SenseHatUtil.senseHat.ledMatrix.setPixel(x, y, Color.BLUE);
+            SenseHatUtil.waitFor(50);
+        }
+        System.out.println("Blinking thread finished");
+
+    };
 
 }
