@@ -14,6 +14,8 @@ public abstract class Screen implements IMqttMessageListener {
 
     boolean globeSightVisible = false;
 
+    Color colorOfTheLastPointTurnedIntoGlobeSight = Color.GREEN;
+
     public Screen() {
 
         for (int i = 0; i < 8; i++) {
@@ -22,44 +24,56 @@ public abstract class Screen implements IMqttMessageListener {
             }
         }
 
-        globeSight = points[0][0];
-
     }
 
-    void changeGlobeSightLocation(Direction direction){
+    void changeGlobeSightLocation(Direction direction) {
 
-        int tempX = globeSight.x;
-        int tempY = globeSight.y;
+        Point tempPoint = new Point(globeSight);
+        int tempX = tempPoint.x;
+        int tempY = tempPoint.y;
 
-        globeSight.stopBlinking();
+        tempPoint.stopBlinking();
+        tempPoint.lightUp(colorOfTheLastPointTurnedIntoGlobeSight);
 
-        switch (direction){
-            case UP:{
-                if (tempY + 1 < 8)
-                    globeSight = points[tempY+1][tempX];
+        //not sure if needed
+        globeSight = null;
+
+        switch (direction) {
+            case UP: {
+                if (tempY + 1 < 8) {
+                    System.out.println("X,Y" + points[tempY + 1][tempX].x + ":" + points[tempY + 1][tempX].y);
+                    globeSight = points[tempY + 1][tempX];
+                    System.out.println("X,Y" + globeSight.x + ":" + globeSight.y);
+                }
                 break;
-            }case DOWN:{
+            }
+            case DOWN: {
                 if (tempY - 1 > -1)
-                    globeSight = points[tempY-1][tempX];
+                    globeSight = points[tempY - 1][tempX];
                 break;
-            }case LEFT:{
+            }
+            case LEFT: {
                 if (tempX + 1 < 8)
-                break;
-            }case RIGHT:{
+                    break;
+            }
+            case RIGHT: {
                 if (tempX - 1 > -1)
-                    globeSight = points[tempY][tempX-1];
+                    globeSight = points[tempY][tempX - 1];
                 break;
             }
         }
 
+        colorOfTheLastPointTurnedIntoGlobeSight = globeSight.color;
         globeSight.startBlinking();
     }
 
 
-
     public void showGlobeSight() {
+        colorOfTheLastPointTurnedIntoGlobeSight = points[0][0].color;
+        globeSight = points[0][0];
+
         globeSightVisible = true;
-        globeSight.lightUp(Color.BLUE);
+        globeSight.startBlinking();
         joystickEventThread.start();
     }
 
@@ -72,25 +86,28 @@ public abstract class Screen implements IMqttMessageListener {
         @Override
         public void run() {
 
-            while (globeSightVisible) {
-                JoystickEvent event = SenseHatUtil.senseHat.joystick.waitForEvent();
-                applyJoystickEvent(event);
-            }
+            while (globeSightVisible)
+                applyJoystickEvent(SenseHatUtil.senseHat.joystick.waitForEvent());
+
         }
     });
 
     public abstract void pointSelected(Point point);
 
-    private void applyJoystickEvent(JoystickEvent event){
-        switch (event.getAction()){
+    private void applyJoystickEvent(JoystickEvent event) {
+        switch (event.getAction()) {
             case PRESSED: {
                 if (event.getDirection().equals(Direction.MIDDLE))
                     pointSelected(globeSight);
                 else changeGlobeSightLocation(event.getDirection());
                 break;
             }
-            case HELD: { break; }
-            case RELEASED: { break; }
+            case HELD: {
+                break;
+            }
+            case RELEASED: {
+                break;
+            }
         }
         //Todo: is it necessary
         SenseHatUtil.waitFor(10);

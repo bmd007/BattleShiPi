@@ -27,8 +27,9 @@ public class Game implements IMqttMessageListener {
     private Thread joystickEventThread = new Thread(new Runnable() {
         @Override
         public void run() {
-            JoystickEvent event = SenseHatUtil.senseHat.joystick.waitForEvent();
-            applyJoystickEvent(event);
+            //Todo condition + condition reverser method
+            while (true)
+                SenseHatUtil.senseHat.joystick.waitForEvent();
         }
     });
 
