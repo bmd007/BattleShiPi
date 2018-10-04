@@ -20,7 +20,7 @@ public abstract class Screen implements IMqttMessageListener {
 
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
-                points[i][j] = new Point(i, j, Color.of(255, 255, 255));
+                points[i][j] = new Point(i, j, Color.of(5, 5, 5));
             }
         }
 
@@ -36,7 +36,7 @@ public abstract class Screen implements IMqttMessageListener {
 
         System.out.println("GS stopped blinking on:" + tempX + "::" + tempY);
         tempPoint.lightUp(colorOfTheLastPointTurnedIntoGlobeSight);
-
+        SenseHatUtil.waitFor(1000);
         switch (direction) {
             case DOWN: {
 
@@ -77,14 +77,11 @@ public abstract class Screen implements IMqttMessageListener {
 
 
     public void showGlobeSight() {
-        colorOfTheLastPointTurnedIntoGlobeSight = points[0][0].color;
-        globeSight = points[0][0];
-        points[0][0].lightUp(Color.RED);
-        System.out.println("BMD::" + points[0][0].blinking);
+        colorOfTheLastPointTurnedIntoGlobeSight = points[5][5].color;
+        globeSight = points[5][5];
+        points[5][5].lightUp(Color.RED);
         globeSightVisible = true;
         globeSight.startBlinking();
-        System.out.println("BMD::" + points[0][0].blinking);
-        System.out.println("BMD::" + globeSight.blinking);
         new Thread(joystickEventRunnable, "joystickEventThread").start();
     }
 
