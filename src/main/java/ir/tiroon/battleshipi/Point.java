@@ -45,10 +45,9 @@ public class Point {
         color = Color.BLUE;
         synchronized (blinking) {
             blinking = true;
-            System.out.println("Gs is blinking at:"+x+"::"+y);
+            System.out.println("Gs is blinking at:" + x + "::" + y);
         }
-        new Thread(blinkingRunnable,"blinkingRunnable").start();
-        notifyAll();
+        new Thread(blinkingRunnable, "blinkingRunnable").start();
     }
 
     public void stopBlinking() {
@@ -56,8 +55,7 @@ public class Point {
             System.out.println("GS stopped blinking on:" + x + "::" + y);
             blinking = false;
         }
-        notifyAll();
-    }
+     }
 
     private Runnable blinkingRunnable = () -> {
         synchronized (blinking) {
