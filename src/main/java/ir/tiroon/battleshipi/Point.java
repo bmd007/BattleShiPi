@@ -52,12 +52,13 @@ public class Point {
     }
 
     private Runnable blinkingRunnable = () -> {
-
-        while (blinking) {
-            SenseHatUtil.senseHat.ledMatrix.setPixel(x, y, Color.of(0, 0, 0));
-            SenseHatUtil.waitFor(70);
-            SenseHatUtil.senseHat.ledMatrix.setPixel(x, y, Color.BLUE);
-            SenseHatUtil.waitFor(50);
+        synchronized (blinking) {
+            while (blinking) {
+                SenseHatUtil.senseHat.ledMatrix.setPixel(x, y, Color.of(0, 0, 0));
+                SenseHatUtil.waitFor(70);
+                SenseHatUtil.senseHat.ledMatrix.setPixel(x, y, Color.BLUE);
+                SenseHatUtil.waitFor(50);
+            }
         }
         System.out.println("Blinking thread finished");
 

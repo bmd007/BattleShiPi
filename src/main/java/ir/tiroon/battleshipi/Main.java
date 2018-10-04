@@ -2,6 +2,8 @@ package ir.tiroon.battleshipi;
 
 import rpi.sensehat.api.SenseHat;
 import rpi.sensehat.api.dto.Color;
+import rpi.sensehat.api.dto.JoystickEvent;
+import rpi.sensehat.api.dto.joystick.Direction;
 
 public class Main {
 
@@ -9,21 +11,22 @@ public class Main {
 //        Screen s = new ScoreScreen();
 //        s.showGlobeSight();
 
-        Point p = new Point(5,5,Color.RED);
-        p.startBlinking();
-        Point p2  = p;
+        Point p1 = new Point(5,5,Color.RED);
+        Point p2 = new Point(5,6,Color.RED);
+        Point p3 = new Point(5,7,Color.RED);
+        Point p4 = new Point(0,0,Color.of(0,0,0));
+        SenseHatUtil.waitFor(2000);
+        Point gs  =  p1;
+        gs.startBlinking();
+
+        JoystickEvent event = SenseHatUtil.senseHat.joystick.waitForEvent();
+            System.out.println("dir:"+event.getDirection());
+            gs.stopBlinking();
+            gs.lightUp(Color.RED);
+            gs = p2;
+            gs.startBlinking();
         SenseHatUtil.waitFor(8000);
-        p2.stopBlinking();
-        p2.lightUp(Color.RED);
-        SenseHatUtil.waitFor(4000);
-        Point p3 = new Point(0,0,Color.GREEN);
-        SenseHatUtil.waitFor(4000);
-        p3.startBlinking();
-        SenseHatUtil.waitFor(8000);
-        p2 = p3;
-        p2.stopBlinking();
-        p2.lightUp(Color.GREEN);
-        p2 = p;
-        p2.startBlinking();
+
+
     }
 }
