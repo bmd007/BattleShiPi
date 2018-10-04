@@ -61,10 +61,11 @@ public class Point {
 
     public void stopBlinking() {
         blinking = false;
-        lightUp(previousColor);
-        SenseHatUtil.waitFor(500);
 
-//        blinkingThread.stop();
+        blinkingThread.stop();
+
+        lightUp(previousColor);
+        
     }
 
     private Runnable blinkingRunnable = () -> {
