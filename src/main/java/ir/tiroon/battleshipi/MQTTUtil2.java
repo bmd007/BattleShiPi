@@ -16,7 +16,7 @@ public class MQTTUtil2 {
 
     public String MQTTBrokerURL;
 
-    MqttClient mqttClient;
+    static MqttClient mqttClient;
 
     public MQTTUtil2() throws Exception {
 
@@ -29,13 +29,7 @@ public class MQTTUtil2 {
 
     }
 
-    public void subscribeATopic(String topicName) throws Exception {
-        mqttClient.subscribe(topicName, qos, (s, mqttMessage) -> {
-            System.out.println("BMD::Message:" + s + ":::" + mqttMessage.toString());
-        });
-    }
-
-    public void unSubscribeATopic(String topicName) throws Exception {
+    public static void unSubscribeATopic(String topicName) throws Exception {
         mqttClient.unsubscribe(topicName);
     }
 
@@ -46,7 +40,7 @@ public class MQTTUtil2 {
     }
 
     IMqttMessageListener mqttMessageListener = (topicName, mqttMessage) -> {
-
+        System.out.println("Listened From "+getClass().getName()+" to "+mqttMessage.toString() );
     };
 
 }

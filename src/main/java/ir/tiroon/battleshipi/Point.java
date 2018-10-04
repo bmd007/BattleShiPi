@@ -1,6 +1,8 @@
 package ir.tiroon.battleshipi;
 
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import rpi.sensehat.api.dto.Color;
 
 
@@ -11,7 +13,8 @@ public class Point {
     public Color color = Color.BLUE;
     public Boolean blinking = false;
 
-    public Point(int x, int y, Color color) {
+    @JsonCreator
+    public Point(@JsonProperty("key") int x, @JsonProperty("key") int y, @JsonProperty("key") Color color) {
         this.x = x;
         this.y = y;
         this.color = color;
@@ -47,13 +50,12 @@ public class Point {
                 public void run() {
                     while (blinking) {
                         SenseHatUtil.senseHat.ledMatrix.setPixel(x, y, Color.of(0, 0, 0));
-                        SenseHatUtil.waitFor(1);
+                        SenseHatUtil.waitFor(150);
                         SenseHatUtil.senseHat.ledMatrix.setPixel(x, y, Color.BLUE);
-                        SenseHatUtil.waitFor(1);
+                        SenseHatUtil.waitFor(100);
                     }
                 }
             }
     );
-
 
 }

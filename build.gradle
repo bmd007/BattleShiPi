@@ -16,6 +16,10 @@ repositories {
 
 dependencies {
     compile group: 'org.eclipse.paho', name: 'org.eclipse.paho.client.mqttv3', version: '1.2.0'
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.9.7'
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: '2.9.7'
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.9.7'
+
     compile name: 'java-executor-1.0-SNAPSHOT'
 }
 

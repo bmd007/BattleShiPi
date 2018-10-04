@@ -1,14 +1,17 @@
 package ir.tiroon.battleshipi;
 
 import rpi.sensehat.api.SenseHat;
+import rpi.sensehat.api.dto.JoystickEvent;
 
 public class SenseHatUtil {
 
     public static SenseHat senseHat = new SenseHat();
 
-    public static void waitFor(Integer seconds) {
+    public static void waitFor(Integer milliSeconds) {
+
+
         try {
-            Thread.sleep(seconds * 1000);
+            Thread.sleep(milliSeconds);
         }
         catch (InterruptedException e) {
             e.printStackTrace();
