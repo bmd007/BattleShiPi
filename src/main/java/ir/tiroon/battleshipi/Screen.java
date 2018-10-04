@@ -36,7 +36,7 @@ public abstract class Screen implements IMqttMessageListener {
         tempPoint.lightUp(colorOfTheLastPointTurnedIntoGlobeSight);
 
         switch (direction) {
-            case UP: {
+            case DOWN: {
                 if (tempY + 1 < 8) {
                     System.out.println("X,Y" + points[tempY + 1][tempX].x + ":" + points[tempY + 1][tempX].y);
                     globeSight = points[tempY + 1][tempX];
@@ -44,7 +44,7 @@ public abstract class Screen implements IMqttMessageListener {
                 }
                 break;
             }
-            case DOWN: {
+            case UP: {
                 if (tempY - 1 > -1)
                     globeSight = points[tempY - 1][tempX];
                 break;

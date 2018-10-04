@@ -28,6 +28,8 @@ public class Main {
             System.out.println("dir:"+event.getDirection());
             gs.stopBlinking();
             gs.lightUp(Color.RED);
+            SenseHatUtil.waitFor(2000);
+            gs.lightUp(Color.GREEN);
             gs = p2;
             gs.startBlinking();
         SenseHatUtil.waitFor(8000);
