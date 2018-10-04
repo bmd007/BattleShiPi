@@ -16,12 +16,14 @@ public class Main {
         p2.stopBlinking();
         p2.lightUp(Color.RED);
         SenseHatUtil.waitFor(4000);
-        p2.startBlinking();
-        SenseHatUtil.waitFor(8000);
         Point p3 = new Point(0,0,Color.GREEN);
+        SenseHatUtil.waitFor(4000);
         p3.startBlinking();
         SenseHatUtil.waitFor(8000);
         p2 = p3;
         p2.stopBlinking();
+        p2.lightUp(Color.GREEN);
+        p2 = p;
+        p2.startBlinking();
     }
 }
