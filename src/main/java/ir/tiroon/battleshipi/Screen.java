@@ -20,7 +20,7 @@ public abstract class Screen implements IMqttMessageListener {
 
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
-                points[i][j] = new Point(i, j, Color.of(1, 1, 1));
+                points[i][j] = new Point(i, j, Color.of(255, 255, 255));
             }
         }
 
@@ -33,15 +33,19 @@ public abstract class Screen implements IMqttMessageListener {
         int tempY = tempPoint.y;
 
         tempPoint.stopBlinking();
+
+        System.out.println("GS stopped blinking on:"+tempX+"::"+tempY);
         tempPoint.lightUp(colorOfTheLastPointTurnedIntoGlobeSight);
 
         switch (direction) {
             case DOWN: {
+
                 if (tempY + 1 < 8) {
                     System.out.println("X,Y" + points[tempY + 1][tempX].x + ":" + points[tempY + 1][tempX].y);
                     globeSight = points[tempY + 1][tempX];
-                    System.out.println("X,Y" + globeSight.x + ":" + globeSight.y);
                 }
+                System.out.println("Globe site new X,Y" + globeSight.x + ":" + globeSight.y);
+
                 break;
             }
             case UP: {
@@ -49,7 +53,7 @@ public abstract class Screen implements IMqttMessageListener {
                     globeSight = points[tempY - 1][tempX];
                 break;
             }
-            case RIGHT:{
+            case RIGHT: {
                 if (tempX + 1 < 8)
                     break;
             }
@@ -69,12 +73,12 @@ public abstract class Screen implements IMqttMessageListener {
         colorOfTheLastPointTurnedIntoGlobeSight = points[0][0].color;
         globeSight = points[0][0];
         points[0][0].lightUp(Color.RED);
-        System.out.println("BMD::"+points[0][0].blinking);
+        System.out.println("BMD::" + points[0][0].blinking);
         globeSightVisible = true;
         globeSight.startBlinking();
-        System.out.println("BMD::"+points[0][0].blinking);
-        System.out.println("BMD::"+globeSight.blinking);
-        new Thread(joystickEventRunnable,"joystickEventThread").start();
+        System.out.println("BMD::" + points[0][0].blinking);
+        System.out.println("BMD::" + globeSight.blinking);
+        new Thread(joystickEventRunnable, "joystickEventThread").start();
     }
 
     public void vanishGlobeSight() {

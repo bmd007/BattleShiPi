@@ -8,7 +8,7 @@ import rpi.sensehat.api.dto.joystick.Direction;
 public class Main {
 
     public static void main(String[] args) {
-
+        SenseHatUtil.senseHat.ledMatrix.clear();
         Screen s = new ScoreScreen();
         s.showGlobeSight();
 

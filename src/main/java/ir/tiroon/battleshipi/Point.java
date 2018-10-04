@@ -44,13 +44,17 @@ public class Point {
 
     public void startBlinking() {
         color = Color.BLUE;
-        blinking = true;
+        synchronized (blinking) {
+            blinking = true;
+        }
 
         new Thread(blinkingRunnable,"blinkingRunnable").start();
     }
 
     public void stopBlinking() {
-        blinking = false;
+        synchronized (blinking) {
+            blinking = false;
+        }
     }
 
     private Runnable blinkingRunnable = () -> {
