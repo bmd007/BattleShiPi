@@ -34,40 +34,45 @@ public abstract class Screen implements IMqttMessageListener {
 
         tempPoint.stopBlinking();
 
-        System.out.println("GS stopped blinking on:"+tempX+"::"+tempY);
+        System.out.println("GS stopped blinking on:" + tempX + "::" + tempY);
         tempPoint.lightUp(colorOfTheLastPointTurnedIntoGlobeSight);
 
         switch (direction) {
             case DOWN: {
 
                 if (tempY - 1 > -1) {
-                    System.out.println("X,Y" + points[tempY - 1][tempX].x + ":" + points[tempY + 1][tempX].y);
+                    System.out.println("X,Y Down" + points[tempY - 1][tempX].x + ":" + points[tempY - 1][tempX].y);
                     globeSight = points[tempY - 1][tempX];
                 }
-                System.out.println("Globe site new X,Y" + globeSight.x + ":" + globeSight.y);
-
                 break;
             }
             case UP: {
-                if (tempY + 1 < 8)
+                if (tempY + 1 < 8) {
+                    System.out.println("X,Y UP" + points[tempY + 1][tempX].x + ":" + points[tempY + 1][tempX].y);
                     globeSight = points[tempY + 1][tempX];
+                }
                 break;
             }
             //todo check inner ifs
             case RIGHT: {
-                if (tempX + 1 < 8)
-                    break;
+                if (tempX + 1 < 8) {
+                    System.out.println("X,Y Right" + points[tempY][tempX + 1].x + ":" + points[tempY][tempX + 1].y);
+                    globeSight = points[tempY][tempX + 1];
+                }
+                break;
             }
             case LEFT: {
-                if (tempX - 1 > -1)
+                if (tempX - 1 > -1) {
+                    System.out.println("X,Y left" + points[tempY][tempX - 1].x + ":" + points[tempY][tempX - 1].y);
                     globeSight = points[tempY][tempX - 1];
+                }
                 break;
             }
         }
 
         colorOfTheLastPointTurnedIntoGlobeSight = globeSight.color;
         globeSight.startBlinking();
-        System.out.println("Gs is blinking at:"+globeSight.x+"::"+globeSight.y);
+
     }
 
 

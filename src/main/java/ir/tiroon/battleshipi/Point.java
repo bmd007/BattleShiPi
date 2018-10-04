@@ -47,7 +47,7 @@ public class Point {
         synchronized (blinking) {
             blinking = true;
         }
-
+        System.out.println("Gs is blinking at:"+x+"::"+y);
         new Thread(blinkingRunnable,"blinkingRunnable").start();
     }
 
