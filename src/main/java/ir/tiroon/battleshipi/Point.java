@@ -45,24 +45,27 @@ public class Point {
         color = Color.BLUE;
         synchronized (blinking) {
             blinking = true;
+            System.out.println("Gs is blinking at:"+x+"::"+y);
         }
-        System.out.println("Gs is blinking at:"+x+"::"+y);
         new Thread(blinkingRunnable,"blinkingRunnable").start();
+        notifyAll();
     }
 
     public void stopBlinking() {
         synchronized (blinking) {
+            System.out.println("GS stopped blinking on:" + x + "::" + y);
             blinking = false;
         }
+        notifyAll();
     }
 
     private Runnable blinkingRunnable = () -> {
         synchronized (blinking) {
             while (blinking) {
                 SenseHatUtil.senseHat.ledMatrix.setPixel(x, y, Color.of(0, 0, 0));
-                SenseHatUtil.waitFor(70);
+                SenseHatUtil.waitFor(30);
                 SenseHatUtil.senseHat.ledMatrix.setPixel(x, y, Color.BLUE);
-                SenseHatUtil.waitFor(50);
+                SenseHatUtil.waitFor(30);
             }
         }
         System.out.println("Blinking thread finished");

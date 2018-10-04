@@ -34,9 +34,8 @@ public abstract class Screen implements IMqttMessageListener {
 
         tempPoint.stopBlinking();
 
-        System.out.println("GS stopped blinking on:" + tempX + "::" + tempY);
         tempPoint.lightUp(colorOfTheLastPointTurnedIntoGlobeSight);
-        SenseHatUtil.waitFor(1000);
+
         switch (direction) {
             case DOWN: {
 
