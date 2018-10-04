@@ -61,7 +61,7 @@ public class Point {
 
     public void stopBlinking() {
         setBlinking(false);
-       // SenseHatUtil.waitFor(200);
+        SenseHatUtil.waitFor(200);
         lightUp(previousColor);
     }
 
