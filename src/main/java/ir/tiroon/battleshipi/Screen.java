@@ -40,19 +40,20 @@ public abstract class Screen implements IMqttMessageListener {
         switch (direction) {
             case DOWN: {
 
-                if (tempY + 1 < 8) {
-                    System.out.println("X,Y" + points[tempY + 1][tempX].x + ":" + points[tempY + 1][tempX].y);
-                    globeSight = points[tempY + 1][tempX];
+                if (tempY - 1 > -1) {
+                    System.out.println("X,Y" + points[tempY - 1][tempX].x + ":" + points[tempY + 1][tempX].y);
+                    globeSight = points[tempY - 1][tempX];
                 }
                 System.out.println("Globe site new X,Y" + globeSight.x + ":" + globeSight.y);
 
                 break;
             }
             case UP: {
-                if (tempY - 1 > -1)
-                    globeSight = points[tempY - 1][tempX];
+                if (tempY + 1 < 8)
+                    globeSight = points[tempY + 1][tempX];
                 break;
             }
+            //todo check inner ifs
             case RIGHT: {
                 if (tempX + 1 < 8)
                     break;
@@ -66,6 +67,7 @@ public abstract class Screen implements IMqttMessageListener {
 
         colorOfTheLastPointTurnedIntoGlobeSight = globeSight.color;
         globeSight.startBlinking();
+        System.out.println("Gs is blinking at:"+globeSight.x+"::"+globeSight.y);
     }
 
 
