@@ -41,30 +41,30 @@ public abstract class Screen implements IMqttMessageListener {
             case DOWN: {
 
                 if (tempY - 1 > -1) {
-                    System.out.println("X,Y Down" + points[tempY - 1][tempX].x + ":" + points[tempY - 1][tempX].y);
-                    globeSight = points[tempY - 1][tempX];
+                    System.out.println("X,Y Down" + points[tempX][tempY - 1].x + ":" + points[tempX][tempY - 1].y);
+                    globeSight = points[tempX][tempY - 1];
                 }
                 break;
             }
             case UP: {
                 if (tempY + 1 < 8) {
-                    System.out.println("X,Y UP" + points[tempY + 1][tempX].x + ":" + points[tempY + 1][tempX].y);
-                    globeSight = points[tempY + 1][tempX];
+                    System.out.println("X,Y UP" + points[tempX][tempY + 1].x + ":" + points[tempX][tempY + 1].y);
+                    globeSight = points[tempX][tempY + 1];
                 }
                 break;
             }
             //todo check inner ifs
             case RIGHT: {
                 if (tempX + 1 < 8) {
-                    System.out.println("X,Y Right" + points[tempY][tempX + 1].x + ":" + points[tempY][tempX + 1].y);
-                    globeSight = points[tempY][tempX + 1];
+                    System.out.println("X,Y Right" + points[tempX + 1][tempY].x + ":" + points[tempX + 1][tempY].y);
+                    globeSight = points[tempX + 1][tempY];
                 }
                 break;
             }
             case LEFT: {
                 if (tempX - 1 > -1) {
-                    System.out.println("X,Y left" + points[tempY][tempX - 1].x + ":" + points[tempY][tempX - 1].y);
-                    globeSight = points[tempY][tempX - 1];
+                    System.out.println("X,Y left" + points[tempX - 1][tempY].x + ":" + points[tempX - 1][tempY].y);
+                    globeSight = points[tempX - 1][tempY];
                 }
                 break;
             }
