@@ -37,17 +37,17 @@ public abstract class Screen implements IMqttMessageListener {
         tempPoint.lightUp(colorOfTheLastPointTurnedIntoGlobeSight);
 
         switch (direction) {
-            case DOWN: {
+            case UP: {
 
                 if (tempY - 1 > -1) {
-                    System.out.println("X,Y Down" + points[tempX][tempY - 1].x + ":" + points[tempX][tempY - 1].y);
+                    System.out.println("X,Y Up" + points[tempX][tempY - 1].x + ":" + points[tempX][tempY - 1].y);
                     globeSight = points[tempX][tempY - 1];
                 }
                 break;
             }
-            case UP: {
+            case DOWN: {
                 if (tempY + 1 < 8) {
-                    System.out.println("X,Y UP" + points[tempX][tempY + 1].x + ":" + points[tempX][tempY + 1].y);
+                    System.out.println("X,Y Down" + points[tempX][tempY + 1].x + ":" + points[tempX][tempY + 1].y);
                     globeSight = points[tempX][tempY + 1];
                 }
                 break;
@@ -92,7 +92,7 @@ public abstract class Screen implements IMqttMessageListener {
     private Runnable joystickEventRunnable = () -> {
 
         while (globeSightVisible)
-            applyJoystickEvent(SenseHatUtil.senseHat.joystick.waitForEvent());
+            applyJoystickEvent(SenseHatUtil.senseHat.joystick.waitForEvent(true));
 
 
         System.out.println("joyStick thread finished");
