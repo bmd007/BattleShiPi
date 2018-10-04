@@ -46,10 +46,8 @@ public class Point {
         blinkingThread.start();
     }
 
-    public void stopBlinking(){
-        synchronized (blinking) {
-            blinking = false;
-        }
+    public void stopBlinking() {
+        blinking = false;
     }
 
     private Thread blinkingThread = new Thread(
