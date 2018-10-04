@@ -34,10 +34,7 @@ public abstract class Screen implements IMqttMessageListener {
 
         tempPoint.stopBlinking();
         tempPoint.lightUp(colorOfTheLastPointTurnedIntoGlobeSight);
-
-        //not sure if needed
-        globeSight = null;
-
+        
         switch (direction) {
             case UP: {
                 if (tempY + 1 < 8) {
