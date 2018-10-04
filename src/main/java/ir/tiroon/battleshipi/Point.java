@@ -42,12 +42,16 @@ public class Point {
 
     public void startBlinking() {
         color = Color.BLUE;
-        blinking = true;
+        synchronized (blinking) {
+            blinking = true;
+        }
         blinkingThread.start();
     }
 
-    public void stopBlinking() {
-        blinking = false;
+    public void stopBlinking(){
+        synchronized (blinking) {
+            blinking = false;
+        }
     }
 
     private Thread blinkingThread = new Thread(
@@ -60,6 +64,7 @@ public class Point {
                         SenseHatUtil.senseHat.ledMatrix.setPixel(x, y, Color.BLUE);
                         SenseHatUtil.waitFor(50);
                     }
+                    System.out.println("Blinking thread finished");
                 }
             }
     ,"BlinkingThread");

@@ -86,6 +86,9 @@ public abstract class Screen implements IMqttMessageListener {
             while (globeSightVisible)
                 applyJoystickEvent(SenseHatUtil.senseHat.joystick.waitForEvent());
 
+
+            System.out.println("joyStick thread finished");
+
         }
     },"JoyStickEventThread");
 
