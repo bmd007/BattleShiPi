@@ -6,7 +6,17 @@ import rpi.sensehat.api.dto.Color;
 import rpi.sensehat.api.dto.JoystickEvent;
 import rpi.sensehat.api.dto.joystick.Direction;
 
-public abstract class Screen implements IMqttMessageListener {
+public abstract class Screen implements IMqttMessageListener, Runnable {
+
+
+    @Override
+    public void run(){
+        while (globeSightVisible)
+            applyJoystickEvent(SenseHatUtil.senseHat.joystick.waitForEvent(true));
+
+        System.out.println("joyStick thread finished");
+
+    }
 
     Point points[][] = new Point[8][8];
 
@@ -18,7 +28,7 @@ public abstract class Screen implements IMqttMessageListener {
 
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
-                points[i][j] = new Point(i, j, Color.of(5, 5, 5));
+                points[i][j] = new Point(i, j, Color.of(0, 0, 0));
             }
         }
 
@@ -85,26 +95,15 @@ public abstract class Screen implements IMqttMessageListener {
 
     public void showGlobeSight() {
         globeSight = points[5][5];
-        points[5][5].lightUp(Color.RED);
         globeSight.startBlinking();
         globeSightVisible = true;
-        new Thread(joystickEventRunnable, "joystickEventThread").start();
+        new Thread(this, "joystickEventThread").start();
     }
 
     public void vanishGlobeSight() {
         globeSightVisible = false;
     }
 
-
-    private Runnable joystickEventRunnable = () -> {
-
-        while (globeSightVisible)
-            applyJoystickEvent(SenseHatUtil.senseHat.joystick.waitForEvent(true));
-
-
-        System.out.println("joyStick thread finished");
-
-    };
 
     public abstract void pointSelected(Point point);
 

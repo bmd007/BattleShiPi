@@ -20,7 +20,6 @@ public class Point implements Runnable{
         this.y = y;
         this.color = color;
         this.previousColor = color;
-//        lightUp();
     }
 
     public Point(Point point) {
@@ -52,8 +51,6 @@ public class Point implements Runnable{
 
     public void startBlinking() {
         previousColor = color;
-        color = Color.BLUE;
-        setBlinking(true);
         blinkingThread = new Thread(this);
         blinkingThread.start();
     }
@@ -71,11 +68,11 @@ public class Point implements Runnable{
         lightUp(color);
     }
 
-    public static boolean isBlinking() {
+    public synchronized static boolean isBlinking() {
         return blinking;
     }
 
-    public void setBlinking(boolean blinking) {
+    public synchronized void setBlinking(boolean blinking) {
         this.blinking = blinking;
     }
 
@@ -85,6 +82,8 @@ public class Point implements Runnable{
 
     @Override
     public void run() {
+        setBlinking(true);
+
         while (isBlinking()) {
             SenseHatUtil.waitFor(30);
             stateLessLightUp(Color.BLUE);
