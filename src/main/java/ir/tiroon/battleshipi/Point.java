@@ -10,9 +10,9 @@ public class Point implements Runnable{
 
     public int x;
     public int y;
-    public Color color = Color.BLUE;
+    public Color color = Color.of(0,0,0);
     static volatile boolean blinking = false;
-    private Color previousColor = Color.GREEN;
+    private Color previousColor = Color.of(0,0,0);
 
     @JsonCreator
     public Point(@JsonProperty("key") int x, @JsonProperty("key") int y, @JsonProperty("key") Color color) {

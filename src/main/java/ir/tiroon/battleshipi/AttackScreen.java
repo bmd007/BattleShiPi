@@ -1,6 +1,7 @@
 package ir.tiroon.battleshipi;
 
 import org.eclipse.paho.client.mqttv3.MqttMessage;
+import rpi.sensehat.api.dto.Color;
 
 public class AttackScreen extends Screen {
 
@@ -10,7 +11,9 @@ public class AttackScreen extends Screen {
 
     @Override
     public void pointSelected(Point point) {
+        point.stopBlinkingAndLightUp(Color.RED);
 
+        changeGlobeSightLocationToStart();
     }
 
     @Override
