@@ -9,7 +9,7 @@ public class Main {
 
     public static void main(String[] args) {
         SenseHatUtil.senseHat.ledMatrix.clear();
-        Screen s = new ScoreScreen();
+        Screen s = new MapScreen();
         s.showGlobeSight();
 
 

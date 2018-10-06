@@ -1,6 +1,7 @@
 package ir.tiroon.battleshipi;
 
 import org.eclipse.paho.client.mqttv3.MqttMessage;
+import rpi.sensehat.api.dto.Color;
 
 public class MapScreen extends Screen {
 
@@ -10,7 +11,10 @@ public class MapScreen extends Screen {
 
     @Override
     public void pointSelected(Point point) {
-
+        Point temp = new Point(point);
+        //Yellow as location on own stuff
+        temp.lightUp(Color.of(255,255,0));
+        changeGlobeSightLocationToStart();
     }
 
     @Override

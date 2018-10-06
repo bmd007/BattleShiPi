@@ -31,6 +31,7 @@ public abstract class Screen implements IMqttMessageListener {
         int tempY = tempPoint.y;
 
         tempPoint.stopBlinking();
+        globeSightVisible = false;
 
         switch (direction) {
             case UP: {
@@ -70,11 +71,24 @@ public abstract class Screen implements IMqttMessageListener {
     }
 
 
+    void changeGlobeSightLocationToStart() {
+
+        globeSight.stopBlinking();
+        globeSightVisible = false;
+
+        globeSight = points[0][0];
+
+        globeSight.startBlinking();
+        globeSightVisible = true;
+
+    }
+
+
     public void showGlobeSight() {
         globeSight = points[5][5];
         points[5][5].lightUp(Color.RED);
-        globeSightVisible = true;
         globeSight.startBlinking();
+        globeSightVisible = true;
         new Thread(joystickEventRunnable, "joystickEventThread").start();
     }
 
