@@ -41,6 +41,7 @@ public class Point {
     }
 
     public void lightUp() {
+        while (blinkingThread.isAlive()){}
         SenseHatUtil.senseHat.ledMatrix.setPixel(x, y, this.color);
     }
 

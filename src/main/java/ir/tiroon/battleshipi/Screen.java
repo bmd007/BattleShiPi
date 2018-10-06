@@ -74,7 +74,7 @@ public abstract class Screen implements IMqttMessageListener {
     void changeGlobeSightLocationToStart() {
 
         globeSight.stopBlinking();
-        globeSightVisible = false;
+//        globeSightVisible = false;
 
         globeSight = points[0][0];
 
