@@ -11,7 +11,7 @@ public class Point {
     public int x;
     public int y;
     public Color color = Color.BLUE;
-    private static volatile boolean blinking = false;
+    static volatile boolean blinking = false;
     private Color previousColor = Color.GREEN;
 
     @JsonCreator
@@ -65,7 +65,7 @@ public class Point {
         lightUp(previousColor);
     }
 
-    public synchronized boolean isBlinking() {
+    public synchronized static boolean isBlinking() {
         return blinking;
     }
 
@@ -76,12 +76,12 @@ public class Point {
     private Runnable blinkingRunnable = () -> {
 
         while (isBlinking()) {
+            SenseHatUtil.waitFor(30);
             lightUp(Color.BLUE);
 //            SenseHatUtil.senseHat.ledMatrix.setPixel(x, y, Color.of(0, 0, 0));
             SenseHatUtil.waitFor(30);
             lightUp(previousColor);
 //            SenseHatUtil.senseHat.ledMatrix.setPixel(x, y, Color.BLUE);
-            SenseHatUtil.waitFor(30);
         }
 
         System.out.println("Blinking thread finished");
