@@ -92,11 +92,6 @@ public class Point {
 
         System.out.println("Blinking thread finished");
 
-        try {
-            finalize();
-        } catch (Throwable throwable) {
-            throwable.printStackTrace();
-        }
     };
 
     public void stateLessLightUp(Color color){
