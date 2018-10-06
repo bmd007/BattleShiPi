@@ -36,7 +36,7 @@ public class Point {
 
     public void lightUp(Color color) {
         this.color = color;
-        previousColor = color;
+//        previousColor = color;
         SenseHatUtil.senseHat.ledMatrix.setPixel(x, y, this.color);
     }
 
@@ -76,9 +76,11 @@ public class Point {
     private Runnable blinkingRunnable = () -> {
 
         while (isBlinking()) {
-            SenseHatUtil.senseHat.ledMatrix.setPixel(x, y, Color.of(0, 0, 0));
+            lightUp(Color.BLUE);
+//            SenseHatUtil.senseHat.ledMatrix.setPixel(x, y, Color.of(0, 0, 0));
             SenseHatUtil.waitFor(30);
-            SenseHatUtil.senseHat.ledMatrix.setPixel(x, y, Color.BLUE);
+            lightUp(previousColor);
+//            SenseHatUtil.senseHat.ledMatrix.setPixel(x, y, Color.BLUE);
             SenseHatUtil.waitFor(30);
         }
 
