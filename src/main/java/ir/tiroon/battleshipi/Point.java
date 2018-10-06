@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import rpi.sensehat.api.dto.Color;
 
 
-public class Point {
+public class Point implements Runnable{
 
     public int x;
     public int y;
@@ -54,7 +54,7 @@ public class Point {
         previousColor = color;
         color = Color.BLUE;
         setBlinking(true);
-        blinkingThread = new Thread(blinkingRunnable);
+        blinkingThread = new Thread(this);
         blinkingThread.start();
     }
 
@@ -71,16 +71,20 @@ public class Point {
         lightUp(color);
     }
 
-    public synchronized static boolean isBlinking() {
+    public static boolean isBlinking() {
         return blinking;
     }
 
-    public synchronized void setBlinking(boolean blinking) {
+    public void setBlinking(boolean blinking) {
         this.blinking = blinking;
     }
 
-    private Runnable blinkingRunnable = () -> {
+    public void stateLessLightUp(Color color){
+        SenseHatUtil.senseHat.ledMatrix.setPixel(x, y,color);
+    }
 
+    @Override
+    public void run() {
         while (isBlinking()) {
             SenseHatUtil.waitFor(30);
             stateLessLightUp(Color.BLUE);
@@ -91,10 +95,5 @@ public class Point {
         }
 
         System.out.println("Blinking thread finished");
-
-    };
-
-    public void stateLessLightUp(Color color){
-        SenseHatUtil.senseHat.ledMatrix.setPixel(x, y,color);
     }
 }
