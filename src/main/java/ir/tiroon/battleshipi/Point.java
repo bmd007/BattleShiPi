@@ -78,11 +78,11 @@ public class Point {
 
         while (isBlinking()) {
             SenseHatUtil.waitFor(30);
-            lightUp(Color.BLUE);
-//            SenseHatUtil.senseHat.ledMatrix.setPixel(x, y, Color.of(0, 0, 0));
+//            lightUp(Color.BLUE);
+            SenseHatUtil.senseHat.ledMatrix.setPixel(x, y, Color.of(0, 0, 0));
             SenseHatUtil.waitFor(30);
-            lightUp(previousColor);
-//            SenseHatUtil.senseHat.ledMatrix.setPixel(x, y, Color.BLUE);
+//            lightUp(previousColor);
+            SenseHatUtil.senseHat.ledMatrix.setPixel(x, y, Color.BLUE);
         }
 
         System.out.println("Blinking thread finished");
