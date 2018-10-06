@@ -66,6 +66,11 @@ public class Point {
         lightUp(previousColor);
     }
 
+    public void stopBlinkingAndLightUp(Color color) {
+        setBlinking(false);
+        lightUp(color);
+    }
+
     public synchronized static boolean isBlinking() {
         return blinking;
     }

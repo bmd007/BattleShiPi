@@ -11,9 +11,7 @@ public class MapScreen extends Screen {
 
     @Override
     public void pointSelected(Point point) {
-        Point temp = new Point(point);
-        //Yellow as location on own stuff
-        temp.lightUp(Color.of(255,255,0));
+        point.stopBlinkingAndLightUp(Color.of(255,255,0));
 
         changeGlobeSightLocationToStart();
     }
