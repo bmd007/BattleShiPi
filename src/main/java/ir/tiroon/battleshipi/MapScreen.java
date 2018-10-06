@@ -14,6 +14,7 @@ public class MapScreen extends Screen {
         Point temp = new Point(point);
         //Yellow as location on own stuff
         temp.lightUp(Color.of(255,255,0));
+
         changeGlobeSightLocationToStart();
     }
 
