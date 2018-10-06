@@ -41,7 +41,7 @@ public class Point {
     }
 
     public void lightUp() {
-        while (blinkingThread.isAlive()){}
+//        while (blinkingThread.isAlive()){}
         SenseHatUtil.senseHat.ledMatrix.setPixel(x, y, this.color);
     }
 
@@ -78,15 +78,18 @@ public class Point {
 
         while (isBlinking()) {
             SenseHatUtil.waitFor(30);
-//            lightUp(Color.BLUE);
-            SenseHatUtil.senseHat.ledMatrix.setPixel(x, y, Color.of(0, 0, 0));
+            stateLessLightUp(Color.BLUE);
+//            SenseHatUtil.senseHat.ledMatrix.setPixel(x, y, Color.of(0, 0, 0));
             SenseHatUtil.waitFor(30);
-//            lightUp(previousColor);
-            SenseHatUtil.senseHat.ledMatrix.setPixel(x, y, Color.BLUE);
+            stateLessLightUp(previousColor);
+//            SenseHatUtil.senseHat.ledMatrix.setPixel(x, y, Color.BLUE);
         }
 
         System.out.println("Blinking thread finished");
 
     };
 
+    public void stateLessLightUp(Color color){
+        SenseHatUtil.senseHat.ledMatrix.setPixel(x, y,color);
+    }
 }

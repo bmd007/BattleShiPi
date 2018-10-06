@@ -31,7 +31,6 @@ public abstract class Screen implements IMqttMessageListener {
         int tempY = tempPoint.y;
 
         tempPoint.stopBlinking();
-        globeSightVisible = false;
 
         switch (direction) {
             case UP: {
