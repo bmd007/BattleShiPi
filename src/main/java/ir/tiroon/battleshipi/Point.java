@@ -15,7 +15,7 @@ public class Point implements Runnable{
     private Color previousColor = Color.of(0,0,0);
 
     @JsonCreator
-    public Point(@JsonProperty("key") int x, @JsonProperty("key") int y, @JsonProperty("key") Color color) {
+    public Point(@JsonProperty("x") int x, @JsonProperty("y") int y, @JsonProperty("color") Color color) {
         this.x = x;
         this.y = y;
         this.color = color;
@@ -94,5 +94,9 @@ public class Point implements Runnable{
         }
 
         System.out.println("Blinking thread finished");
+    }
+
+    public boolean isOnTheSameLocationAs(Point other) {
+        return (this.x == other.x && this.y == other.y);
     }
 }

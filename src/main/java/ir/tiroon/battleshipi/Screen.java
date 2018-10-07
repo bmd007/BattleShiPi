@@ -6,32 +6,33 @@ import rpi.sensehat.api.dto.Color;
 import rpi.sensehat.api.dto.JoystickEvent;
 import rpi.sensehat.api.dto.joystick.Direction;
 
-public abstract class Screen implements IMqttMessageListener, Runnable {
+public abstract class Screen implements Runnable {
 
-
-    @Override
-    public void run(){
-        while (globeSightVisible)
-            applyJoystickEvent(SenseHatUtil.senseHat.joystick.waitForEvent(true));
-
-        System.out.println("joyStick thread finished");
-
-    }
-
+    //We can remove it, just some re code is needed
     Point points[][] = new Point[8][8];
 
     Point globeSight = null;
 
-    boolean globeSightVisible = false;
+    volatile boolean globeSightVisible = false;
 
     public Screen() {
 
-        for (int i = 0; i < 8; i++) {
-            for (int j = 0; j < 8; j++) {
+        for (int i = 0; i < 8; i++)
+            for (int j = 0; j < 8; j++)
                 points[i][j] = new Point(i, j, Color.of(0, 0, 0));
-            }
-        }
+    }
 
+
+    public void showGlobeSight() {
+        globeSight = points[0][0];
+        globeSight.startBlinking();
+        globeSightVisible = true;
+        new Thread(this, "joystickEventThread").start();
+    }
+
+    public void vanishGlobeSight() {
+        globeSightVisible = false;
+        globeSight.stopBlinking();
     }
 
     void changeGlobeSightLocation(Direction direction) {
@@ -58,7 +59,6 @@ public abstract class Screen implements IMqttMessageListener, Runnable {
                 }
                 break;
             }
-            //todo check inner ifs
             case RIGHT: {
                 if (tempX + 1 < 8) {
                     System.out.println("X,Y Right" + points[tempX + 1][tempY].x + ":" + points[tempX + 1][tempY].y);
@@ -81,31 +81,24 @@ public abstract class Screen implements IMqttMessageListener, Runnable {
 
 
     void changeGlobeSightLocationToStart() {
-
         globeSight.stopBlinking();
-//        globeSightVisible = false;
 
         globeSight = points[0][0];
 
         globeSight.startBlinking();
-        globeSightVisible = true;
-
     }
 
 
-    public void showGlobeSight() {
-        globeSight = points[5][5];
-        globeSight.startBlinking();
-        globeSightVisible = true;
-        new Thread(this, "joystickEventThread").start();
+
+
+    @Override
+    public void run(){
+        while (globeSightVisible)
+            applyJoystickEvent(SenseHatUtil.senseHat.joystick.waitForEvent(true));
+
+        System.out.println("joyStick thread finished");
+
     }
-
-    public void vanishGlobeSight() {
-        globeSightVisible = false;
-    }
-
-
-    public abstract void pointSelected(Point point);
 
     private void applyJoystickEvent(JoystickEvent event) {
         switch (event.getAction()) {
@@ -126,19 +119,8 @@ public abstract class Screen implements IMqttMessageListener, Runnable {
         SenseHatUtil.waitFor(10);
     }
 
-    @Override
-    public abstract void messageArrived(String topic, MqttMessage message);
 
-//    Color[] colors = {
-//            X, O, X, O, X, O, X, O,
-//            O, X, O, X, O, X, O, X,
-//            X, O, X, O, X, O, X, O,
-//            O, X, O, X, O, X, O, X,
-//            X, O, X, O, X, O, X, O,
-//            O, X, O, X, O, X, O, X,
-//            X, O, X, O, X, O, X, O,
-//            O, X, O, X, O, X, O, X
-//    };
-//    waitFor(5);
+    public abstract void pointSelected(Point point);
 
+    public abstract void reShowUp();
 }

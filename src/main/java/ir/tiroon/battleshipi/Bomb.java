@@ -4,11 +4,19 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Bomb {
-    public Point target;
+    public int targetX;
+    public int targetY;
+    public boolean isSuccessful = false;
 
 
     @JsonCreator
-    public Bomb(@JsonProperty("key") Point target) {
-        this.target = target;
+    public Bomb(@JsonProperty("targetX") int targetX,
+                @JsonProperty("targetY") int targetY,
+                @JsonProperty
+            ("isSuccessful") boolean isSuccessful) {
+        this.targetX = targetX;
+        this.targetY = targetY;
+        this.isSuccessful = isSuccessful;
+
     }
 }
