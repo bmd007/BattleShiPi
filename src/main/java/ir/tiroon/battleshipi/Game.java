@@ -2,6 +2,7 @@ package ir.tiroon.battleshipi;
 
 import org.eclipse.paho.client.mqttv3.IMqttMessageListener;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
+import rpi.sensehat.api.dto.Color;
 
 
 public class Game implements IMqttMessageListener {
@@ -77,17 +78,18 @@ public class Game implements IMqttMessageListener {
         //receive a bomb, check if it was good or bad, publish the result
         Bomb receivedBomb = (Bomb) MQTTUtil.objectMapper.reader().readValue(message.getPayload());
 
-        if (topic.equals(MQTTUtil.bomb_result_topic)) {
-            if (receivedBomb.isSuccessful){
+        if (topic.equals(MQTTUtil.bomb_result_topic))
+            if (receivedBomb.isSuccessful)
+                attackScreen.addSuccessfulBombPoint(
+                        new Point(receivedBomb.targetX,receivedBomb.targetY,Color.RED));
+            else
+                attackScreen.addSuccessfulBombPoint(
+                        new Point(receivedBomb.targetX,receivedBomb.targetY,Color.GREEN));
 
-            }else {
 
-            }
+        else if (topic.equals(MQTTUtil.bombard_topic))
+            MQTTUtil.advertiseTheResultOfABomb(mapScreen.putABombOnMap(receivedBomb));
 
-        } else if (topic.equals(MQTTUtil.bombard_topic)) {
-            Bomb bombToTellAboutItsResult = mapScreen.putABombOnMap(receivedBomb);
-            advertiseTheResult();
-        }
 
 
     }

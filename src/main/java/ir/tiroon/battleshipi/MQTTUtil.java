@@ -55,4 +55,21 @@ public class MQTTUtil {
 
     }
 
+    public static void advertiseTheResultOfABomb(Bomb bomb) {
+        try {
+            String bombToTellAboutJson = objectMapper.writer().writeValueAsString(bomb);
+
+            MqttMessage message = new MqttMessage(bombToTellAboutJson.getBytes());
+            message.setQos(qos);
+            mqttClient.publish(bomb_result_topic, message);
+
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        } catch (MqttPersistenceException e) {
+            e.printStackTrace();
+        } catch (MqttException e) {
+            e.printStackTrace();
+        }
+
+    }
 }

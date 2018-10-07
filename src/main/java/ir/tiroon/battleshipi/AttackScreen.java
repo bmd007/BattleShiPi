@@ -18,6 +18,17 @@ public class AttackScreen extends Screen {
     //Show them in green
     public volatile ArrayList<Point> waistedBombsLocations = new ArrayList<>(7);
 
+
+    public synchronized void addSuccessfulBombPoint(Point point){
+        //Todo Should I light up this point now????
+        successfulBombsLocations.add(point);
+    }
+
+    public synchronized void addWaistedBombPoint(Point point){
+        //Todo Should I light up this point now????
+        waistedBombsLocations.add(point);
+    }
+
     @Override
     public synchronized void pointSelected(Point point) {
         point.stopBlinkingAndLightUp(Color.RED);
