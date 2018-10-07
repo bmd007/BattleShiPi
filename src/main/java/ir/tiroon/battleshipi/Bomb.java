@@ -13,7 +13,7 @@ public class Bomb {
     public Bomb(@JsonProperty("targetX") int targetX,
                 @JsonProperty("targetY") int targetY,
                 @JsonProperty
-            ("isSuccessful") boolean isSuccessful) {
+                        ("isSuccessful") boolean isSuccessful) {
         this.targetX = targetX;
         this.targetY = targetY;
         this.isSuccessful = isSuccessful;

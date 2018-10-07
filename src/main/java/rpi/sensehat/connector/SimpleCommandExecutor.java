@@ -47,8 +47,7 @@ public class SimpleCommandExecutor implements CommandExecutor {
             waitForCommand(p);
             checkCommandException(result);
             return new CommandResult(result.toString());
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             System.err.println(e);
 
             if (e instanceof CommandException) {
@@ -79,8 +78,7 @@ public class SimpleCommandExecutor implements CommandExecutor {
         try {
             p.waitFor();
             Thread.sleep(100);
-        }
-        catch (InterruptedException e) {
+        } catch (InterruptedException e) {
             System.err.println(e);
         }
     }

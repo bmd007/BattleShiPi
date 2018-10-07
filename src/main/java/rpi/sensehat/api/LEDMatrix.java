@@ -119,8 +119,7 @@ public class LEDMatrix extends APIBase {
     public void waitFor(Integer seconds) {
         try {
             Thread.sleep(seconds * 1000);
-        }
-        catch (InterruptedException e) {
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }

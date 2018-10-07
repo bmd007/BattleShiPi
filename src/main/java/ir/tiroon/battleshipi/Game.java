@@ -14,10 +14,6 @@ public class Game implements IMqttMessageListener {
     volatile int score;
 
     public Game() {
-//Todo check if it is  really necessary?
-        while (!MQTTUtil.mqttClient.isConnected()) {
-        }
-        ///////////////////////////
         cleanScreen();
         phase1();
 
@@ -35,6 +31,11 @@ public class Game implements IMqttMessageListener {
         SenseHatUtil.waitFor(8000);
         cleanScreen();
         phase5();
+
+        SenseHatUtil.waitFor(8000);
+        cleanScreen();
+        phase3();
+
     }
 
     void phase1() {
@@ -79,17 +80,18 @@ public class Game implements IMqttMessageListener {
         Bomb receivedBomb = (Bomb) MQTTUtil.objectMapper.reader().readValue(message.getPayload());
 
         if (topic.equals(MQTTUtil.bomb_result_topic))
-            if (receivedBomb.isSuccessful)
+            if (receivedBomb.isSuccessful) {
                 attackScreen.addSuccessfulBombPoint(
-                        new Point(receivedBomb.targetX,receivedBomb.targetY,Color.RED));
-            else
+                        new Point(receivedBomb.targetX, receivedBomb.targetY, Color.RED));
+
+                score++;
+            } else
                 attackScreen.addSuccessfulBombPoint(
-                        new Point(receivedBomb.targetX,receivedBomb.targetY,Color.GREEN));
+                        new Point(receivedBomb.targetX, receivedBomb.targetY, Color.GREEN));
 
 
         else if (topic.equals(MQTTUtil.bombard_topic))
             MQTTUtil.advertiseTheResultOfABomb(mapScreen.putABombOnMap(receivedBomb));
-
 
 
     }

@@ -12,16 +12,14 @@ public class MQTTUtil {
     //This class seems to need refurbishment
     public static String bombard_topic = "bombard_topic";
     public static String bomb_result_topic = "bomb_result_topic";
+    public static ObjectMapper objectMapper = new ObjectMapper();
     static int qos = 2;
-    MemoryPersistence persistence = new MemoryPersistence();
-
-    public String MQTTBrokerURL;
-
+    static MemoryPersistence persistence = new MemoryPersistence();
     static MqttClient mqttClient;
 
-    public MQTTUtil() throws Exception {
+    public static void MQTTUtilConnect(String brokerIPAddress) throws Exception {
 
-        mqttClient = new MqttClient("tcp://" + MQTTBrokerURL + ":1883", new Random().nextLong() + ":", persistence);
+        mqttClient = new MqttClient("tcp://" + brokerIPAddress + ":1883", new Random().nextLong() + ":", persistence);
 
         MqttConnectOptions connOpts = new MqttConnectOptions();
         mqttClient.connect(connOpts);
@@ -32,8 +30,6 @@ public class MQTTUtil {
     public static void unSubscribeATopic(String topicName) throws Exception {
         mqttClient.unsubscribe(topicName);
     }
-
-    public static ObjectMapper objectMapper = new ObjectMapper();
 
     public static void sendBomb(Bomb bomb) {
         try {

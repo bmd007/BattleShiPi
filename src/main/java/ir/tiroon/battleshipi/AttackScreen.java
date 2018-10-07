@@ -6,25 +6,22 @@ import java.util.ArrayList;
 
 public class AttackScreen extends Screen {
 
+    public volatile ArrayList<Point> selectedLocationsToSendBomb = new ArrayList<>(7);
+    //Show them in red
+    public volatile ArrayList<Point> successfulBombsLocations = new ArrayList<>(7);
+    //Show them in green
+    public volatile ArrayList<Point> waistedBombsLocations = new ArrayList<>(7);
+
     public AttackScreen() {
         super();
     }
 
-    public volatile ArrayList<Point> selectedLocationsToSendBomb = new ArrayList<>(7);
-
-    //Show them in red
-    public volatile ArrayList<Point> successfulBombsLocations = new ArrayList<>(7);
-
-    //Show them in green
-    public volatile ArrayList<Point> waistedBombsLocations = new ArrayList<>(7);
-
-
-    public synchronized void addSuccessfulBombPoint(Point point){
+    public synchronized void addSuccessfulBombPoint(Point point) {
         //Todo Should I light up this point now????
         successfulBombsLocations.add(point);
     }
 
-    public synchronized void addWaistedBombPoint(Point point){
+    public synchronized void addWaistedBombPoint(Point point) {
         //Todo Should I light up this point now????
         waistedBombsLocations.add(point);
     }

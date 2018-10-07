@@ -6,13 +6,12 @@ import java.util.ArrayList;
 
 public class MapScreen extends Screen {
 
+    public volatile ArrayList<Point> selectedLocations = new ArrayList<>(5);
+    public volatile ArrayList<Point> receivedBombs = new ArrayList<>(7);
+
     public MapScreen() {
         super();
     }
-
-    public volatile ArrayList<Point> selectedLocations = new ArrayList<>(5);
-
-    public volatile ArrayList<Point> receivedBombs = new ArrayList<>(7);
 
     @Override
     public synchronized void pointSelected(Point point) {

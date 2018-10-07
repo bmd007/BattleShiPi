@@ -1,7 +1,5 @@
 package ir.tiroon.battleshipi;
 
-import org.eclipse.paho.client.mqttv3.IMqttMessageListener;
-import org.eclipse.paho.client.mqttv3.MqttMessage;
 import rpi.sensehat.api.dto.Color;
 import rpi.sensehat.api.dto.JoystickEvent;
 import rpi.sensehat.api.dto.joystick.Direction;
@@ -89,10 +87,8 @@ public abstract class Screen implements Runnable {
     }
 
 
-
-
     @Override
-    public void run(){
+    public void run() {
         while (globeSightVisible)
             applyJoystickEvent(SenseHatUtil.senseHat.joystick.waitForEvent(true));
 

@@ -6,13 +6,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import rpi.sensehat.api.dto.Color;
 
 
-public class Point implements Runnable{
+public class Point implements Runnable {
 
+    static volatile boolean blinking = false;
     public int x;
     public int y;
-    public Color color = Color.of(0,0,0);
-    static volatile boolean blinking = false;
-    private Color previousColor = Color.of(0,0,0);
+    public Color color = Color.of(0, 0, 0);
+    Thread blinkingThread = null;
+    private Color previousColor = Color.of(0, 0, 0);
 
     @JsonCreator
     public Point(@JsonProperty("x") int x, @JsonProperty("y") int y, @JsonProperty("color") Color color) {
@@ -29,6 +30,14 @@ public class Point implements Runnable{
         this.previousColor = point.getPreviousColor();
     }
 
+    public synchronized static boolean isBlinking() {
+        return blinking;
+    }
+
+    public synchronized void setBlinking(boolean blinking) {
+        this.blinking = blinking;
+    }
+
     public Color getPreviousColor() {
         return previousColor;
     }
@@ -40,7 +49,8 @@ public class Point implements Runnable{
     }
 
     public void lightUp() {
-        while (blinkingThread.isAlive()){}
+        while (blinkingThread.isAlive()) {
+        }
         SenseHatUtil.senseHat.ledMatrix.setPixel(x, y, this.color);
     }
 
@@ -55,8 +65,6 @@ public class Point implements Runnable{
         blinkingThread.start();
     }
 
-    Thread blinkingThread = null;
-
     //The blinkingThread won't notice that blinking has set to false!:(
     public void stopBlinking() {
         setBlinking(false);
@@ -68,16 +76,8 @@ public class Point implements Runnable{
         lightUp(color);
     }
 
-    public synchronized static boolean isBlinking() {
-        return blinking;
-    }
-
-    public synchronized void setBlinking(boolean blinking) {
-        this.blinking = blinking;
-    }
-
-    public void stateLessLightUp(Color color){
-        SenseHatUtil.senseHat.ledMatrix.setPixel(x, y,color);
+    public void stateLessLightUp(Color color) {
+        SenseHatUtil.senseHat.ledMatrix.setPixel(x, y, color);
     }
 
     @Override
@@ -87,10 +87,8 @@ public class Point implements Runnable{
         while (isBlinking()) {
             SenseHatUtil.waitFor(30);
             stateLessLightUp(Color.BLUE);
-//            SenseHatUtil.senseHat.ledMatrix.setPixel(x, y, Color.of(0, 0, 0));
             SenseHatUtil.waitFor(30);
             stateLessLightUp(previousColor);
-//            SenseHatUtil.senseHat.ledMatrix.setPixel(x, y, Color.BLUE);
         }
 
         System.out.println("Blinking thread finished");

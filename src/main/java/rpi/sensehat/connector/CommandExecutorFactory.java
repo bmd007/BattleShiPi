@@ -26,11 +26,9 @@ public class CommandExecutorFactory {
         String senseHatExecutorType = System.getProperty(SENSE_HAT_EXECUTOR_TYPE);
         if (MULTIPLE_COMMAND.equals(senseHatExecutorType)) {
             return new MultipleCommandExecutor();
-        }
-        else if (SIMPLE_COMMAND.equals(senseHatExecutorType)) {
+        } else if (SIMPLE_COMMAND.equals(senseHatExecutorType)) {
             return new SimpleCommandExecutor();
-        }
-        else {
+        } else {
             return new SimpleCommandExecutor();
         }
     }
