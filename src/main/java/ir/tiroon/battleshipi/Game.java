@@ -9,8 +9,6 @@ import java.util.Set;
 
 public class Game {
 
-    Set<MyMqttMessage> receivedMessages = new HashSet<>();
-
     MapScreen mapScreen;
 
     AttackScreen attackScreen;
@@ -19,10 +17,12 @@ public class Game {
 
     public Game() throws MqttException {
 
-        MQTTUtil.mqttClient.subscribe(MQTTUtil.topic, (topic, message) -> {
-            System.out.println("subscriber From " + topic + " to " + message.toString());
+        MQTTUtil.mqttClient.subscribe(MQTTUtil.topic, (topic, msg) -> {
 
-            MyMqttMessage receivedMessage = MQTTUtil.objectMapper.reader().readValue(message.getPayload());
+            String message = msg.toString();
+            System.out.println("subscriber From " + topic + " to " + message);
+
+            MyMqttMessage receivedMessage = MQTTUtil.objectMapper.reader().readValue(message);
 
             System.out.println("BMD received Message:"+receivedMessage.toSendOrToInformAbout);
 
