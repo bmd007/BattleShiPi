@@ -18,7 +18,7 @@ public class MQTTUtil {
     static MqttClient mqttClient;
 
     public static void MQTTUtilConnect(String brokerIPAddress) throws Exception {
-
+        System.out.println("tcp://" + brokerIPAddress + ":1883");
         mqttClient = new MqttClient("tcp://" + brokerIPAddress + ":1883", new Random().nextLong() + ":", persistence);
 
         MqttConnectOptions connOpts = new MqttConnectOptions();
