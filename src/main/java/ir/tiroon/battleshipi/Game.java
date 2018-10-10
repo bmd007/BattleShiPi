@@ -101,6 +101,7 @@ public class Game implements IMqttMessageListener {
             MQTTUtil.advertiseTheResultOfABomb(mapScreen.putABombOnMap(receivedBomb));
 
 
+
     }
 
     void cleanScreen() {

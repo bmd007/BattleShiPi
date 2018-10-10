@@ -23,8 +23,6 @@ public class MQTTUtil {
 
         MqttConnectOptions connOpts = new MqttConnectOptions();
         mqttClient.connect(connOpts);
-        mqttClient.subscribe(bombard_topic);
-        mqttClient.subscribe(bomb_result_topic);
     }
 
     public static void unSubscribeATopic(String topicName) throws Exception {
@@ -32,6 +30,14 @@ public class MQTTUtil {
     }
 
     public static void sendBomb(Bomb bomb) {
+        if (!mqttClient.isConnected()) {
+            try {
+                mqttClient.reconnect();
+            } catch (MqttException e) {
+                e.printStackTrace();
+            }
+        }
+
         try {
             String bombJson = objectMapper.writer().writeValueAsString(bomb);
 
@@ -52,6 +58,14 @@ public class MQTTUtil {
     }
 
     public static void advertiseTheResultOfABomb(Bomb bomb) {
+        if (!mqttClient.isConnected()) {
+            try {
+                mqttClient.reconnect();
+            } catch (MqttException e) {
+                e.printStackTrace();
+            }
+        }
+
         try {
             String bombToTellAboutJson = objectMapper.writer().writeValueAsString(bomb);
 
