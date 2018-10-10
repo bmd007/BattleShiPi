@@ -1,30 +1,28 @@
 package ir.tiroon.battleshipi;
 
+import org.eclipse.paho.client.mqttv3.IMqttMessageListener;
 import org.eclipse.paho.client.mqttv3.MqttException;
+import org.eclipse.paho.client.mqttv3.MqttMessage;
 import rpi.sensehat.api.dto.Color;
-
-import java.util.HashSet;
-import java.util.Set;
-
 
 public class Game {
 
-    MapScreen mapScreen;
+    static MapScreen mapScreen;
 
-    AttackScreen attackScreen;
+    static AttackScreen attackScreen;
 
     static volatile int score;
 
-    public Game() throws MqttException {
-
-        MQTTUtil.mqttClient.subscribe(MQTTUtil.topic, (topic, msg) -> {
+    public static IMqttMessageListener messageListener = new IMqttMessageListener() {
+        @Override
+        public void messageArrived(String topic, MqttMessage msg) throws Exception {
 
             String message = msg.toString();
             System.out.println("subscriber From " + topic + " to " + message);
 
             MyMqttMessage receivedMessage = MQTTUtil.objectMapper.reader().readValue(message);
 
-            System.out.println("BMD received Message:"+receivedMessage.toSendOrToInformAbout);
+            System.out.println("BMD received Message:" + receivedMessage.toSendOrToInformAbout);
 
             if (receivedMessage.toSendOrToInformAbout) {
                 MQTTUtil.advertiseTheResultOfABomb(
@@ -43,8 +41,10 @@ public class Game {
                             new Point(receivedMessage.bomb.targetX, receivedMessage.bomb.targetY, Color.GREEN));
                 }
             }
-        });
+        }
+    };
 
+    public Game() throws MqttException {
 
         cleanScreen();
         phase1();
