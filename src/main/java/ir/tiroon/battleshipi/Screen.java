@@ -44,31 +44,23 @@ public abstract class Screen implements Runnable {
         switch (direction) {
             case UP: {
 
-                if (tempY - 1 > -1) {
-                    System.out.println("X,Y Up" + points[tempX][tempY - 1].x + ":" + points[tempX][tempY - 1].y);
+                if (tempY - 1 > -1)
                     globeSight = points[tempX][tempY - 1];
-                }
                 break;
             }
             case DOWN: {
-                if (tempY + 1 < 8) {
-                    System.out.println("X,Y Down" + points[tempX][tempY + 1].x + ":" + points[tempX][tempY + 1].y);
+                if (tempY + 1 < 8)
                     globeSight = points[tempX][tempY + 1];
-                }
                 break;
             }
             case RIGHT: {
-                if (tempX + 1 < 8) {
-                    System.out.println("X,Y Right" + points[tempX + 1][tempY].x + ":" + points[tempX + 1][tempY].y);
+                if (tempX + 1 < 8)
                     globeSight = points[tempX + 1][tempY];
-                }
                 break;
             }
             case LEFT: {
-                if (tempX - 1 > -1) {
-                    System.out.println("X,Y left" + points[tempX - 1][tempY].x + ":" + points[tempX - 1][tempY].y);
+                if (tempX - 1 > -1)
                     globeSight = points[tempX - 1][tempY];
-                }
                 break;
             }
         }
