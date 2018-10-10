@@ -89,8 +89,7 @@ public class MQTTUtil {
             mqttClient.publish(Main.playerNumber == 1 ? sendBombInfoToPlayer2Topic : sendBombInfoToPlayer1Topic,
                     message);
 
-            System.out.println("I am advertised to :"+Main.playerNumber == 1 ? sendBombInfoToPlayer2Topic : sendBombInfoToPlayer1Topic,
-                    message);
+            System.out.println("I am advertised");
 
 
         } catch (JsonProcessingException e) {
