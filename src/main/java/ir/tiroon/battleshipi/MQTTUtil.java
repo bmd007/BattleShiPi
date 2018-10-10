@@ -32,7 +32,8 @@ public class MQTTUtil {
 
     public static void sendBomb(Bomb bomb) {
         try {
-            mqttClient.connect();
+            if (!mqttClient.isConnected())
+                mqttClient.connect();
 
             System.out.println("Bomb is sending:" +
                     objectMapper.writer().writeValueAsString(bomb));
@@ -58,7 +59,8 @@ public class MQTTUtil {
 
     public static void advertiseTheResultOfABomb(Bomb bomb) {
         try {
-            mqttClient.connect();
+            if (!mqttClient.isConnected())
+                mqttClient.connect();
 
             System.out.println("Advertising result of bomb:"+
                 objectMapper.writer().writeValueAsString(bomb));

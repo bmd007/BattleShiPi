@@ -6,8 +6,8 @@ import java.util.ArrayList;
 
 public class MapScreen extends Screen {
 
-    public volatile ArrayList<Point> selectedLocations = new ArrayList<>(3);
-    public volatile ArrayList<Point> receivedBombs = new ArrayList<>(4);
+    public volatile ArrayList<Point> selectedLocations = new ArrayList<>(2);
+    public volatile ArrayList<Point> receivedBombs = new ArrayList<>(2);
 
     public MapScreen() {
         super();
