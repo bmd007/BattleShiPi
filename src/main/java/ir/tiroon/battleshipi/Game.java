@@ -22,6 +22,7 @@ public class Game {
 //        mapScreen.putABombOnMap(receivedBomb)
     };
 
+    //This Listener do not receive the message that it should receive
     public static IMqttMessageListener bombInfoReceiveListener = (topic, message) -> {
         System.out.println("Message received from:"+topic+"::"+message.toString());
 
