@@ -4,9 +4,9 @@ public class Main {
 
     public static void main(String[] args) {
 
-        System.out.println("args:"+args[0]+":"+args[1]);
+        System.out.println("args:"+args[0]);
         try {
-            MQTTUtil.MQTTUtilConnect(args[1]);
+            MQTTUtil.MQTTUtilConnect(args[0]);
         } catch (Exception e) {
             e.printStackTrace();
         }
