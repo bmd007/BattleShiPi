@@ -95,6 +95,7 @@ public class Point implements Runnable {
     }
 
     public boolean isOnTheSameLocationAs(Point other) {
+        System.out.println("Checking equality of "+this.x +"=="+ other.x +" AND "+ this.y +"=="+ other.y);
         return (this.x == other.x && this.y == other.y);
     }
 }

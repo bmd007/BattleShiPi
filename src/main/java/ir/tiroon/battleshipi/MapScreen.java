@@ -22,13 +22,12 @@ public class MapScreen extends Screen {
         changeGlobeSightLocationToStart();
     }
 
-    public Bomb putABombOnMap(Bomb bomb) {
+    public synchronized Bomb putABombOnMap(Bomb bomb) {
 
         Point receivedBombPoint = new Point(bomb.targetX, bomb.targetY, Color.RED);
 
         receivedBombs.add(receivedBombPoint);
 
-        //is it really necessary?
         bomb.isSuccessful = false;
 
         for (Point p : selectedLocations)

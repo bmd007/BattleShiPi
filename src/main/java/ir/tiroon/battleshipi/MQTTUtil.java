@@ -64,14 +64,7 @@ public class MQTTUtil {
 
             System.out.println("Advertising result of bomb:"+
                 objectMapper.writer().writeValueAsString(bomb));
-        } catch (MqttException e) {
-            e.printStackTrace();
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
 
-
-        try {
             String bombToTellAboutJson = objectMapper.writer().writeValueAsString(bomb);
 
             MqttMessage message = new MqttMessage(bombToTellAboutJson.getBytes());

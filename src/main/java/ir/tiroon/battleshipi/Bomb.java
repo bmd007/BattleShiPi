@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class Bomb {
     public int targetX;
     public int targetY;
-    public boolean isSuccessful = false;
+    public boolean isSuccessful;
 
 
     @JsonCreator
