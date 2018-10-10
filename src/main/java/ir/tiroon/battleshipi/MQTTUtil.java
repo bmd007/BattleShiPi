@@ -16,9 +16,10 @@ public class MQTTUtil {
     static int qos = 2;
     static MemoryPersistence persistence = new MemoryPersistence();
     public static MqttClient mqttClient;
+    static String brokerIPAddress;
 
     public static void MQTTUtilConnect(String brokerIPAddress) throws Exception {
-        System.out.println("tcp://" + brokerIPAddress + ":1883");
+        MQTTUtil.brokerIPAddress = brokerIPAddress;
         mqttClient = new MqttClient("tcp://" + brokerIPAddress + ":1883", new Random().nextLong() + ":", persistence);
 
         MqttConnectOptions connOpts = new MqttConnectOptions();
@@ -32,7 +33,7 @@ public class MQTTUtil {
     public static void sendBomb(Bomb bomb) {
         if (!mqttClient.isConnected()) {
             try {
-                mqttClient.reconnect();
+                mqttClient.connect();
             } catch (MqttException e) {
                 e.printStackTrace();
             }
@@ -60,7 +61,7 @@ public class MQTTUtil {
     public static void advertiseTheResultOfABomb(Bomb bomb) {
         if (!mqttClient.isConnected()) {
             try {
-                mqttClient.reconnect();
+                mqttClient.connect();
             } catch (MqttException e) {
                 e.printStackTrace();
             }

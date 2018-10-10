@@ -18,8 +18,7 @@ public class MapScreen extends Screen {
         point.stopBlinkingAndLightUp(Color.of(255, 255, 0));
         //The copy should be yellow
         selectedLocations.add(new Point(point));
-        //Todo remove
-        System.out.println("Selected Locations size:"+selectedLocations.size()+"::"+selectedLocations.get(0).x);
+
         changeGlobeSightLocationToStart();
     }
 

@@ -12,7 +12,7 @@ public class Game implements IMqttMessageListener {
 
     AttackScreen attackScreen;
 
-    volatile int score;
+    static volatile int score;
 
     public Game() throws MqttException {
 
@@ -93,7 +93,7 @@ public class Game implements IMqttMessageListener {
 
                 score++;
             } else
-                attackScreen.addSuccessfulBombPoint(
+                attackScreen.addWaistedBombPoint(
                         new Point(receivedBomb.targetX, receivedBomb.targetY, Color.GREEN));
 
 
