@@ -18,6 +18,7 @@ public class Game {
         System.out.println("BMD:"+message.toString()+"::"+message+"::"+new String(message.getPayload()));
 
         Bomb receivedBomb = new ObjectMapper().reader().readValue(message.toString());
+
         //Todo @Vlad This two lines below won't execute?? WHY???
         System.out.println("Bomb info advertising game class"+receivedBomb.isSuccessful);
 
@@ -25,7 +26,6 @@ public class Game {
 
     };
 
-    //This Listener do not receive the message that it should receive
     public static IMqttMessageListener bombInfoReceiveListener = (topic, message) -> {
         System.out.println("Bomb info received from:"+topic+"::"+message.toString());
 
