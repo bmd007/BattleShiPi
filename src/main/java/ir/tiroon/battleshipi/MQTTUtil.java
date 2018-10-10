@@ -31,15 +31,13 @@ public class MQTTUtil {
     }
 
     public static void sendBomb(Bomb bomb) {
-        if (!mqttClient.isConnected()) {
-            try {
-                mqttClient.connect();
-            } catch (MqttException e) {
-                e.printStackTrace();
-            }
-        }
-
         try {
+            mqttClient.connect();
+
+            System.out.println("Bomb is sending:" +
+                    objectMapper.writer().writeValueAsString(bomb));
+
+
             String bombJson = objectMapper.writer().writeValueAsString(bomb);
 
             MqttMessage message = new MqttMessage(bombJson.getBytes());
@@ -59,13 +57,17 @@ public class MQTTUtil {
     }
 
     public static void advertiseTheResultOfABomb(Bomb bomb) {
-        if (!mqttClient.isConnected()) {
-            try {
-                mqttClient.connect();
-            } catch (MqttException e) {
-                e.printStackTrace();
-            }
+        try {
+            mqttClient.connect();
+
+            System.out.println("Advertising result of bomb:"+
+                objectMapper.writer().writeValueAsString(bomb));
+        } catch (MqttException e) {
+            e.printStackTrace();
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
         }
+
 
         try {
             String bombToTellAboutJson = objectMapper.writer().writeValueAsString(bomb);

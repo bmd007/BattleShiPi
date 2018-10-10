@@ -80,7 +80,7 @@ public class Game implements IMqttMessageListener {
 
     @Override
     public void messageArrived(String topic, MqttMessage message) throws Exception {
-        System.out.println("Listened From " + getClass().getName() + " to " + message.toString());
+        System.out.println("Listened From " + topic + " to " + message.toString());
 
         //ToDO
         //receive a bomb, check if it was good or bad, publish the result
