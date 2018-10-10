@@ -10,8 +10,7 @@ import java.util.Random;
 public class MQTTUtil {
 
     //This class seems to need refurbishment
-    public static String bombard_topic = "bombard_topic";
-    public static String bomb_result_topic = "bomb_result_topic";
+    public static String topic = "BattleShiPi";
     public static ObjectMapper objectMapper = new ObjectMapper();
     static int qos = 2;
     static MemoryPersistence persistence = new MemoryPersistence();
@@ -35,15 +34,12 @@ public class MQTTUtil {
             if (!mqttClient.isConnected())
                 mqttClient.connect();
 
-            System.out.println("Bomb is sending:" +
-                    objectMapper.writer().writeValueAsString(bomb));
+            String bombMessageJson = objectMapper.writer().
+                    writeValueAsString(new MyMqttMessage(bomb, true));
 
-
-            String bombJson = objectMapper.writer().writeValueAsString(bomb);
-
-            MqttMessage message = new MqttMessage(bombJson.getBytes());
+            MqttMessage message = new MqttMessage(bombMessageJson.getBytes());
             message.setQos(qos);
-            mqttClient.publish(bombard_topic, message);
+            mqttClient.publish(topic, message);
 
         } catch (JsonProcessingException e) {
             e.printStackTrace();
@@ -57,19 +53,19 @@ public class MQTTUtil {
 
     }
 
-    public static void advertiseTheResultOfABomb(Bomb bomb) {
+    public static void advertiseTheResultOfABomb(MyMqttMessage bombToInformAboutMessage) {
         try {
             if (!mqttClient.isConnected())
                 mqttClient.connect();
 
             System.out.println("Advertising result of bomb:"+
-                objectMapper.writer().writeValueAsString(bomb));
+                objectMapper.writer().writeValueAsString(bombToInformAboutMessage));
 
-            String bombToTellAboutJson = objectMapper.writer().writeValueAsString(bomb);
+            String bombToTellAboutJson = objectMapper.writer().writeValueAsString(bombToInformAboutMessage);
 
             MqttMessage message = new MqttMessage(bombToTellAboutJson.getBytes());
             message.setQos(qos);
-            mqttClient.publish(bomb_result_topic, message);
+            mqttClient.publish(topic, message);
 
         } catch (JsonProcessingException e) {
             e.printStackTrace();

@@ -17,29 +17,27 @@ public class Game{
     public Game() throws MqttException {
 
 
-        MQTTUtil.mqttClient.subscribe(MQTTUtil.bomb_result_topic, (topic, message) -> {
-            System.out.println("Listened From " + topic + " to " + message.toString());
+        MQTTUtil.mqttClient.subscribe(MQTTUtil.topic, (topic, message) -> {
+            System.out.println("subscriber From " + topic + " to " + message.toString());
 
-            Bomb receivedBomb = (Bomb) MQTTUtil.objectMapper.reader().readValue(message.getPayload());
+            MyMqttMessage receivedMessage = (MyMqttMessage) MQTTUtil.objectMapper.reader().readValue(message.getPayload());
 
-            if (receivedBomb.isSuccessful) {
-                attackScreen.addSuccessfulBombPoint(
-                        new Point(receivedBomb.targetX, receivedBomb.targetY, Color.RED));
+            if (!receivedMessage.toSendOrToInformAbout)
+                if (receivedMessage.bomb.isSuccessful) {
+                    attackScreen.addSuccessfulBombPoint(
+                            new Point(receivedMessage.bomb.targetX, receivedMessage.bomb.targetY, Color.RED));
 
-                score++;
-            } else {
-                attackScreen.addWaistedBombPoint(
-                        new Point(receivedBomb.targetX, receivedBomb.targetY, Color.GREEN));
-            }
+                    score++;
+                } else
+                    attackScreen.addWaistedBombPoint(
+                            new Point(receivedMessage.bomb.targetX, receivedMessage.bomb.targetY, Color.GREEN));
 
-        });
 
-        MQTTUtil.mqttClient.subscribe(MQTTUtil.bombard_topic, (topic, message) -> {
-            System.out.println("Listened From " + topic + " to " + message.toString());
+            else MQTTUtil.advertiseTheResultOfABomb(
+                    new MyMqttMessage(
+                            mapScreen.putABombOnMap(receivedMessage.bomb),
+                    false));
 
-            Bomb receivedBomb = (Bomb) MQTTUtil.objectMapper.reader().readValue(message.getPayload());
-
-            MQTTUtil.advertiseTheResultOfABomb(mapScreen.putABombOnMap(receivedBomb));
         });
 
 
