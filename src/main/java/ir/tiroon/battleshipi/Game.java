@@ -16,14 +16,6 @@ public class Game{
 
     public Game() throws MqttException {
 
-        MQTTUtil.mqttClient.subscribe(MQTTUtil.bombard_topic, (topic, message) -> {
-            System.out.println("Listened From " + topic + " to " + message.toString());
-
-            Bomb receivedBomb = (Bomb) MQTTUtil.objectMapper.reader().readValue(message.getPayload());
-
-            MQTTUtil.advertiseTheResultOfABomb(mapScreen.putABombOnMap(receivedBomb));
-        });
-
 
         MQTTUtil.mqttClient.subscribe(MQTTUtil.bomb_result_topic, (topic, message) -> {
             System.out.println("Listened From " + topic + " to " + message.toString());
@@ -41,6 +33,15 @@ public class Game{
             }
 
         });
+
+        MQTTUtil.mqttClient.subscribe(MQTTUtil.bombard_topic, (topic, message) -> {
+            System.out.println("Listened From " + topic + " to " + message.toString());
+
+            Bomb receivedBomb = (Bomb) MQTTUtil.objectMapper.reader().readValue(message.getPayload());
+
+            MQTTUtil.advertiseTheResultOfABomb(mapScreen.putABombOnMap(receivedBomb));
+        });
+
 
 
         cleanScreen();

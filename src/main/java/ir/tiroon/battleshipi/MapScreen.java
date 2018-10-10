@@ -27,6 +27,8 @@ public class MapScreen extends Screen {
 
         Point receivedBombPoint = new Point(bomb.targetX, bomb.targetY, Color.RED);
 
+        System.out.println("BMD::putOnMapCheck>"+selectedLocations.size());
+
         receivedBombs.add(receivedBombPoint);
 
         bomb.isSuccessful = false;
