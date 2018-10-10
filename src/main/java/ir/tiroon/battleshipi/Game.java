@@ -20,7 +20,7 @@ public class Game{
         MQTTUtil.mqttClient.subscribe(MQTTUtil.topic, (topic, message) -> {
             System.out.println("subscriber From " + topic + " to " + message.toString());
 
-            MyMqttMessage receivedMessage = (MyMqttMessage) MQTTUtil.objectMapper.reader().readValue(message.getPayload());
+            MyMqttMessage receivedMessage = MQTTUtil.objectMapper.reader().readValue(message.getPayload());
 
             if (!receivedMessage.toSendOrToInformAbout)
                 if (receivedMessage.bomb.isSuccessful) {

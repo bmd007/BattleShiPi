@@ -7,15 +7,16 @@ import java.util.Set;
 
 public class MapScreen extends Screen {
 
-    volatile Set<Point> selectedLocations = new HashSet<>();
-    volatile Set<Point> receivedBombs = new HashSet<>();
+    //may only this one should be volite
+    Set<Point> selectedLocations = new HashSet<>();
+    Set<Point> receivedBombs = new HashSet<>();
 
     public MapScreen() {
         super();
     }
 
     @Override
-    public synchronized void pointSelected(Point point) {
+    public void pointSelected(Point point) {
         point.stopBlinkingAndLightUp(Color.of(255, 255, 0));
         //The copy should be yellow
         selectedLocations.add(new Point(point));
@@ -23,7 +24,7 @@ public class MapScreen extends Screen {
         changeGlobeSightLocationToStart();
     }
 
-    public synchronized Bomb putABombOnMap(Bomb bomb) {
+    public Bomb putABombOnMap(Bomb bomb) {
 
         Point receivedBombPoint = new Point(bomb.targetX, bomb.targetY, Color.RED);
 

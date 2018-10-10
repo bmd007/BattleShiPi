@@ -7,26 +7,26 @@ import java.util.Set;
 
 public class AttackScreen extends Screen {
 
-    public volatile Set<Point> selectedLocationsToSendBomb = new HashSet<>();
+    Set<Point> selectedLocationsToSendBomb = new HashSet<>();
     //Show them in red
-    public volatile Set<Point> successfulBombsLocations = new HashSet<>();
+    Set<Point> successfulBombsLocations = new HashSet<>();
     //Show them in green
-    public volatile Set<Point> waistedBombsLocations = new HashSet<>();
+    Set<Point> waistedBombsLocations = new HashSet<>();
 
     public AttackScreen() {
         super();
     }
 
-    public synchronized void addSuccessfulBombPoint(Point point) {
+    public void addSuccessfulBombPoint(Point point) {
         successfulBombsLocations.add(point);
     }
 
-    public synchronized void addWaistedBombPoint(Point point) {
+    public void addWaistedBombPoint(Point point) {
         waistedBombsLocations.add(point);
     }
 
     @Override
-    public synchronized void pointSelected(Point point) {
+    public void pointSelected(Point point) {
         point.stopBlinkingAndLightUp(Color.RED);
 
         Point bombLocation = new Point(point);
