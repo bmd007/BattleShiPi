@@ -1,12 +1,15 @@
 package ir.tiroon.battleshipi;
 
-import org.eclipse.paho.client.mqttv3.IMqttMessageListener;
 import org.eclipse.paho.client.mqttv3.MqttException;
-import org.eclipse.paho.client.mqttv3.MqttMessage;
 import rpi.sensehat.api.dto.Color;
 
+import java.util.HashSet;
+import java.util.Set;
 
-public class Game{
+
+public class Game {
+
+    Set<MyMqttMessage> receivedMessages = new HashSet<>();
 
     MapScreen mapScreen;
 
@@ -16,30 +19,29 @@ public class Game{
 
     public Game() throws MqttException {
 
-
         MQTTUtil.mqttClient.subscribe(MQTTUtil.topic, (topic, message) -> {
             System.out.println("subscriber From " + topic + " to " + message.toString());
 
             MyMqttMessage receivedMessage = MQTTUtil.objectMapper.reader().readValue(message.getPayload());
 
-            if (!receivedMessage.toSendOrToInformAbout)
+            if (receivedMessage.toSendOrToInformAbout) {
+                MQTTUtil.advertiseTheResultOfABomb(
+                        new MyMqttMessage(
+                                mapScreen.putABombOnMap(receivedMessage.bomb),
+                                false));
+
+            } else {
                 if (receivedMessage.bomb.isSuccessful) {
                     attackScreen.addSuccessfulBombPoint(
                             new Point(receivedMessage.bomb.targetX, receivedMessage.bomb.targetY, Color.RED));
 
                     score++;
-                } else
+                } else {
                     attackScreen.addWaistedBombPoint(
                             new Point(receivedMessage.bomb.targetX, receivedMessage.bomb.targetY, Color.GREEN));
-
-
-            else MQTTUtil.advertiseTheResultOfABomb(
-                    new MyMqttMessage(
-                            mapScreen.putABombOnMap(receivedMessage.bomb),
-                    false));
-
+                }
+            }
         });
-
 
 
         cleanScreen();
