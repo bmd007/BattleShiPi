@@ -18,7 +18,8 @@ public class Game {
 
         Bomb receivedBomb = MQTTUtil.objectMapper.reader().readValue(message.toString());
 
-        MQTTUtil.advertiseTheResultOfABomb(mapScreen.putABombOnMap(receivedBomb));
+        MQTTUtil.advertiseTheResultOfABomb(new Bomb(receivedBomb.targetX, receivedBomb.targetY,true));
+//        mapScreen.putABombOnMap(receivedBomb)
     };
 
     public static IMqttMessageListener bombInfoReceiveListener = (topic, message) -> {
