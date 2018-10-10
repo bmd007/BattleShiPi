@@ -10,7 +10,12 @@ import java.util.Random;
 public class MQTTUtil {
 
     //This class seems to need refurbishment
-    public static String topic = "BattleShiPi";
+
+    public static String sendBombToPlayer1Topic = "sendBombToPlayer1Topic";
+    public static String sendBombToPlayer2Topic = "sendBombToPlayer2Topic";
+    public static String sendBombInfoToPlayer1Topic = "sendBombInfoToPlayer1Topic";
+    public static String sendBombInfoToPlayer2Topic = "sendBombInfoToPlayer2Topic";
+
     public static ObjectMapper objectMapper = new ObjectMapper();
     static int qos = 2;
     static MemoryPersistence persistence = new MemoryPersistence();
@@ -19,30 +24,38 @@ public class MQTTUtil {
 
     public static void MQTTUtilConnect(String brokerIPAddress) throws Exception {
         MQTTUtil.brokerIPAddress = brokerIPAddress;
+
         mqttClient = new MqttClient("tcp://" + brokerIPAddress + ":1883", new Random().nextLong() + ":", persistence);
 
-        MqttConnectOptions connOpts = new MqttConnectOptions();
-        mqttClient.connect(connOpts);
-        mqttClient.subscribe(topic,Game.messageListener);
+        connect();
     }
+
 
     public static void unSubscribeATopic(String topicName) throws Exception {
         mqttClient.unsubscribe(topicName);
     }
 
+    public static void connect() {
+
+        MqttConnectOptions connOpts = new MqttConnectOptions();
+        connOpts.setAutomaticReconnect(true);
+        try {
+            mqttClient.connect(connOpts);
+        } catch (MqttException e) {
+            e.printStackTrace();
+        }
+    }
+
     public static void sendBomb(Bomb bomb) {
         try {
-            if (!mqttClient.isConnected()) {
-                mqttClient.connect();
-                mqttClient.subscribe(topic,Game.messageListener);
-            }
+            if (!mqttClient.isConnected()) connect();
 
-            String bombMessageJson = objectMapper.writer().
-                    writeValueAsString(new MyMqttMessage(bomb, true));
 
-            MqttMessage message = new MqttMessage(bombMessageJson.getBytes());
+            String bombJson = objectMapper.writer().writeValueAsString(bomb);
+
+            MqttMessage message = new MqttMessage(bombJson.getBytes());
             message.setQos(qos);
-            mqttClient.publish(topic, message);
+            mqttClient.publish(Main.playerNumber == 1 ? sendBombToPlayer2Topic : sendBombInfoToPlayer1Topic, message);
 
         } catch (JsonProcessingException e) {
             e.printStackTrace();
@@ -56,21 +69,17 @@ public class MQTTUtil {
 
     }
 
-    public static void advertiseTheResultOfABomb(MyMqttMessage bombToInformAboutMessage) {
+    public static void advertiseTheResultOfABomb(Bomb bombToInformAbout) {
         try {
-            if (!mqttClient.isConnected()) {
-                mqttClient.connect();
-                mqttClient.subscribe(topic,Game.messageListener);
-            }
+            if (!mqttClient.isConnected()) connect();
 
-            System.out.println("Advertising result of bomb:"+
-                objectMapper.writer().writeValueAsString(bombToInformAboutMessage));
 
-            String bombToTellAboutJson = objectMapper.writer().writeValueAsString(bombToInformAboutMessage);
+            String bombToTellAboutJson = objectMapper.writer().writeValueAsString(bombToInformAbout);
 
             MqttMessage message = new MqttMessage(bombToTellAboutJson.getBytes());
             message.setQos(qos);
-            mqttClient.publish(topic, message);
+            mqttClient.publish(Main.playerNumber == 1 ? sendBombInfoToPlayer2Topic : sendBombInfoToPlayer1Topic,
+                    message);
 
         } catch (JsonProcessingException e) {
             e.printStackTrace();

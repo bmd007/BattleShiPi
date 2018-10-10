@@ -1,8 +1,8 @@
 package ir.tiroon.battleshipi;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.eclipse.paho.client.mqttv3.IMqttMessageListener;
 import org.eclipse.paho.client.mqttv3.MqttException;
-import org.eclipse.paho.client.mqttv3.MqttMessage;
 import rpi.sensehat.api.dto.Color;
 
 public class Game {
@@ -13,39 +13,33 @@ public class Game {
 
     static volatile int score;
 
-    public static IMqttMessageListener messageListener = new IMqttMessageListener() {
-        @Override
-        public void messageArrived(String topic, MqttMessage msg) throws Exception {
-
-            String message = msg.toString();
-            System.out.println("subscriber From " + topic + " to " + message);
-
-            MyMqttMessage receivedMessage = MQTTUtil.objectMapper.reader().readValue(message);
-
-            System.out.println("BMD received Message:" + receivedMessage.toSendOrToInformAbout);
-
-            if (receivedMessage.toSendOrToInformAbout) {
-                MQTTUtil.advertiseTheResultOfABomb(
-                        new MyMqttMessage(
-                                mapScreen.putABombOnMap(receivedMessage.bomb),
-                                false));
-
-            } else {
-                if (receivedMessage.bomb.isSuccessful) {
-                    attackScreen.addSuccessfulBombPoint(
-                            new Point(receivedMessage.bomb.targetX, receivedMessage.bomb.targetY, Color.RED));
-
-                    score++;
-                } else {
-                    attackScreen.addWaistedBombPoint(
-                            new Point(receivedMessage.bomb.targetX, receivedMessage.bomb.targetY, Color.GREEN));
-                }
-            }
-        }
-    };
-
     public Game() throws MqttException {
 
+        MQTTUtil.mqttClient.subscribe(Main.playerNumber == 1 ? MQTTUtil.sendBombToPlayer1Topic : MQTTUtil
+                .sendBombToPlayer2Topic, (topic, message) -> {
+
+            Bomb receivedBomb = MQTTUtil.objectMapper.reader().readValue(message.toString());
+
+            MQTTUtil.advertiseTheResultOfABomb(mapScreen.putABombOnMap(receivedBomb));
+        });
+
+        MQTTUtil.mqttClient.subscribe(Main.playerNumber == 1 ? MQTTUtil.sendBombInfoToPlayer1Topic : MQTTUtil
+                .sendBombInfoToPlayer2Topic, (topic, message) -> {
+
+            Bomb receivedBombInfo = MQTTUtil.objectMapper.reader().readValue(message.toString());
+
+            if (receivedBombInfo.isSuccessful) {
+                attackScreen.addSuccessfulBombPoint(
+                        new Point(receivedBombInfo.targetX, receivedBombInfo.targetY, Color.RED));
+
+                score = score + 1;
+            } else
+                attackScreen.addWaistedBombPoint(
+                        new Point(receivedBombInfo.targetX, receivedBombInfo.targetY, Color.GREEN));
+
+        });
+
+        ///////////////////////////
         cleanScreen();
         phase1();
 
