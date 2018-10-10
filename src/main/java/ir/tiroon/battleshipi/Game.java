@@ -18,8 +18,8 @@ public class Game {
 
         Bomb receivedBomb = MQTTUtil.objectMapper.reader().readValue(message.toString());
 
-        MQTTUtil.advertiseTheResultOfABomb(new Bomb(receivedBomb.targetX, receivedBomb.targetY,true));
-//        mapScreen.putABombOnMap(receivedBomb)
+        MQTTUtil.advertiseTheResultOfABomb(mapScreen.putABombOnMap(receivedBomb));
+
     };
 
     //This Listener do not receive the message that it should receive

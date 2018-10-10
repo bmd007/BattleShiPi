@@ -80,6 +80,7 @@ public class MQTTUtil {
         try {
             if (!mqttClient.isConnected()) connect();
 
+            System.out.println("I am advertising:"+Main.playerNumber);
 
             String bombToTellAboutJson = objectMapper.writer().writeValueAsString(bombToInformAbout);
 
@@ -87,6 +88,10 @@ public class MQTTUtil {
             message.setQos(qos);
             mqttClient.publish(Main.playerNumber == 1 ? sendBombInfoToPlayer2Topic : sendBombInfoToPlayer1Topic,
                     message);
+
+            System.out.println("I am advertised to :"+Main.playerNumber == 1 ? sendBombInfoToPlayer2Topic : sendBombInfoToPlayer1Topic,
+                    message);
+
 
         } catch (JsonProcessingException e) {
             e.printStackTrace();
