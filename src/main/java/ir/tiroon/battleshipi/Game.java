@@ -13,31 +13,37 @@ public class Game {
 
     static volatile int score;
 
+    public static IMqttMessageListener bombReceiveListener = (topic, message) -> {
+        System.out.println("Message received from:"+topic+"::"+message.toString());
+
+        Bomb receivedBomb = MQTTUtil.objectMapper.reader().readValue(message.toString());
+
+        MQTTUtil.advertiseTheResultOfABomb(mapScreen.putABombOnMap(receivedBomb));
+    };
+
+    public static IMqttMessageListener bombInfoReceiveListener = (topic, message) -> {
+        System.out.println("Message received from:"+topic+"::"+message.toString());
+
+        Bomb receivedBombInfo = MQTTUtil.objectMapper.reader().readValue(message.toString());
+
+        if (receivedBombInfo.isSuccessful) {
+            attackScreen.addSuccessfulBombPoint(
+                    new Point(receivedBombInfo.targetX, receivedBombInfo.targetY, Color.RED));
+
+            score = score + 1;
+        } else
+            attackScreen.addWaistedBombPoint(
+                    new Point(receivedBombInfo.targetX, receivedBombInfo.targetY, Color.GREEN));
+
+    };
+
     public Game() throws MqttException {
 
         MQTTUtil.mqttClient.subscribe(Main.playerNumber == 1 ? MQTTUtil.sendBombToPlayer1Topic : MQTTUtil
-                .sendBombToPlayer2Topic, (topic, message) -> {
-
-            Bomb receivedBomb = MQTTUtil.objectMapper.reader().readValue(message.toString());
-
-            MQTTUtil.advertiseTheResultOfABomb(mapScreen.putABombOnMap(receivedBomb));
-        });
+                .sendBombToPlayer2Topic, bombReceiveListener);
 
         MQTTUtil.mqttClient.subscribe(Main.playerNumber == 1 ? MQTTUtil.sendBombInfoToPlayer1Topic : MQTTUtil
-                .sendBombInfoToPlayer2Topic, (topic, message) -> {
-
-            Bomb receivedBombInfo = MQTTUtil.objectMapper.reader().readValue(message.toString());
-
-            if (receivedBombInfo.isSuccessful) {
-                attackScreen.addSuccessfulBombPoint(
-                        new Point(receivedBombInfo.targetX, receivedBombInfo.targetY, Color.RED));
-
-                score = score + 1;
-            } else
-                attackScreen.addWaistedBombPoint(
-                        new Point(receivedBombInfo.targetX, receivedBombInfo.targetY, Color.GREEN));
-
-        });
+                .sendBombInfoToPlayer2Topic, bombInfoReceiveListener);
 
         ///////////////////////////
         cleanScreen();
@@ -46,6 +52,7 @@ public class Game {
         cleanScreen();
         phase2();
 
+        SenseHatUtil.waitFor(4000);
         cleanScreen();
         phase3();
 

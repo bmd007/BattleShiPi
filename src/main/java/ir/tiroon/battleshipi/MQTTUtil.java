@@ -36,11 +36,18 @@ public class MQTTUtil {
     }
 
     public static void connect() {
-
-        MqttConnectOptions connOpts = new MqttConnectOptions();
-        connOpts.setAutomaticReconnect(true);
         try {
+
+            MqttConnectOptions connOpts = new MqttConnectOptions();
+            connOpts.setAutomaticReconnect(true);
             mqttClient.connect(connOpts);
+
+            MQTTUtil.mqttClient.subscribe(Main.playerNumber == 1 ? MQTTUtil.sendBombToPlayer1Topic : MQTTUtil
+                    .sendBombToPlayer2Topic, Game.bombReceiveListener);
+
+            MQTTUtil.mqttClient.subscribe(Main.playerNumber == 1 ? MQTTUtil.sendBombInfoToPlayer1Topic : MQTTUtil
+                    .sendBombInfoToPlayer2Topic, Game.bombInfoReceiveListener);
+
         } catch (MqttException e) {
             e.printStackTrace();
         }
