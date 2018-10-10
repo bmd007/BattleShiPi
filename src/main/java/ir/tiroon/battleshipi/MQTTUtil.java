@@ -15,7 +15,7 @@ public class MQTTUtil {
     public static ObjectMapper objectMapper = new ObjectMapper();
     static int qos = 2;
     static MemoryPersistence persistence = new MemoryPersistence();
-    static MqttClient mqttClient;
+    public static MqttClient mqttClient;
 
     public static void MQTTUtilConnect(String brokerIPAddress) throws Exception {
         System.out.println("tcp://" + brokerIPAddress + ":1883");
