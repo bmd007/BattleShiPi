@@ -24,6 +24,8 @@ public class Game {
 
             MyMqttMessage receivedMessage = MQTTUtil.objectMapper.reader().readValue(message.getPayload());
 
+            System.out.println("BMD received Message:"+receivedMessage.toSendOrToInformAbout);
+
             if (receivedMessage.toSendOrToInformAbout) {
                 MQTTUtil.advertiseTheResultOfABomb(
                         new MyMqttMessage(
