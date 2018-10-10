@@ -59,7 +59,7 @@ public class Game implements IMqttMessageListener {
     }
 
     void phase3() {
-        SenseHatUtil.senseHat.ledMatrix.showLetter("!" + score + "!");
+        SenseHatUtil.senseHat.ledMatrix.showMessage("" + score + "!");
     }
 
     void phase4() {
