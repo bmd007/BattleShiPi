@@ -18,7 +18,7 @@ public class Game {
         System.out.println("BMD:"+message.toString()+"::"+message+"::"+new String(message.getPayload()));
 
         Bomb receivedBomb = new ObjectMapper().reader().readValue(message.toString());
-
+        //Todo @Vlad This two lines below won't execute?? WHY???
         System.out.println("Bomb info advertising game class"+receivedBomb.isSuccessful);
 
         MQTTUtil.advertiseTheResultOfABomb(mapScreen.putABombOnMap(receivedBomb));
