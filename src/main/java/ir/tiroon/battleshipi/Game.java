@@ -6,7 +6,7 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 import rpi.sensehat.api.dto.Color;
 
 
-public class Game implements IMqttMessageListener {
+public class Game{
 
     MapScreen mapScreen;
 
@@ -16,8 +16,31 @@ public class Game implements IMqttMessageListener {
 
     public Game() throws MqttException {
 
-        MQTTUtil.mqttClient.subscribe(MQTTUtil.bombard_topic, this);
-        MQTTUtil.mqttClient.subscribe(MQTTUtil.bomb_result_topic, this);
+        MQTTUtil.mqttClient.subscribe(MQTTUtil.bombard_topic, (topic, message) -> {
+            System.out.println("Listened From " + topic + " to " + message.toString());
+
+            Bomb receivedBomb = (Bomb) MQTTUtil.objectMapper.reader().readValue(message.getPayload());
+
+            MQTTUtil.advertiseTheResultOfABomb(mapScreen.putABombOnMap(receivedBomb));
+        });
+
+
+        MQTTUtil.mqttClient.subscribe(MQTTUtil.bomb_result_topic, (topic, message) -> {
+            System.out.println("Listened From " + topic + " to " + message.toString());
+
+            Bomb receivedBomb = (Bomb) MQTTUtil.objectMapper.reader().readValue(message.getPayload());
+
+            if (receivedBomb.isSuccessful) {
+                attackScreen.addSuccessfulBombPoint(
+                        new Point(receivedBomb.targetX, receivedBomb.targetY, Color.RED));
+
+                score++;
+            } else {
+                attackScreen.addWaistedBombPoint(
+                        new Point(receivedBomb.targetX, receivedBomb.targetY, Color.GREEN));
+            }
+
+        });
 
 
         cleanScreen();
@@ -77,34 +100,6 @@ public class Game implements IMqttMessageListener {
         attackScreen.reShowUp();
     }
 
-
-    @Override
-    public void messageArrived(String topic, MqttMessage message) throws Exception {
-        System.out.println("Listened From " + topic + " to " + message.toString());
-
-        //ToDO
-        //receive a bomb, check if it was good or bad, publish the result
-        Bomb receivedBomb = (Bomb) MQTTUtil.objectMapper.reader().readValue(message.getPayload());
-
-        if (topic.equals(MQTTUtil.bomb_result_topic)) {
-            if (receivedBomb.isSuccessful) {
-                attackScreen.addSuccessfulBombPoint(
-                        new Point(receivedBomb.targetX, receivedBomb.targetY, Color.RED));
-
-                score++;
-            } else {
-                attackScreen.addWaistedBombPoint(
-                        new Point(receivedBomb.targetX, receivedBomb.targetY, Color.GREEN));
-            }
-
-        } else if (topic.equals(MQTTUtil.bombard_topic)) {
-            MQTTUtil.advertiseTheResultOfABomb(mapScreen.putABombOnMap(receivedBomb));
-        }else{
-            System.out.println("BMD::Wrong topic "+topic);
-        }
-
-
-    }
 
     void cleanScreen() {
         SenseHatUtil.senseHat.ledMatrix.clear();

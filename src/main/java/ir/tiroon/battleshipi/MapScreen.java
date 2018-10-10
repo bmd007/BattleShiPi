@@ -7,8 +7,8 @@ import java.util.Set;
 
 public class MapScreen extends Screen {
 
-    public Set<Point> selectedLocations = new HashSet<>();
-    public Set<Point> receivedBombs = new HashSet<>();
+    volatile Set<Point> selectedLocations = new HashSet<>();
+    volatile Set<Point> receivedBombs = new HashSet<>();
 
     public MapScreen() {
         super();
