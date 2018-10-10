@@ -14,10 +14,10 @@ public class Game {
     static volatile int score;
 
     public static IMqttMessageListener bombReceiveListener = (topic, message) -> {
-//        System.out.println("Bomb received from:"+topic+"::"+message.toString());
 
-        Bomb receivedBomb = MQTTUtil.objectMapper.reader().readValue(message.toString());
-        System.out.println("Bomb received from:"+topic+"::"+message.toString());
+        System.out.println("BMD:"+message.toString()+"::"+message+"::"+new String(message.getPayload()));
+
+        Bomb receivedBomb = new ObjectMapper().reader().readValue(message.toString());
 
         System.out.println("Bomb info advertising game class"+receivedBomb.isSuccessful);
 
@@ -29,7 +29,7 @@ public class Game {
     public static IMqttMessageListener bombInfoReceiveListener = (topic, message) -> {
         System.out.println("Bomb info received from:"+topic+"::"+message.toString());
 
-        Bomb receivedBombInfo = MQTTUtil.objectMapper.reader().readValue(message.toString());
+        Bomb receivedBombInfo = new ObjectMapper().reader().readValue(message.toString());
 
         if (receivedBombInfo.isSuccessful) {
             attackScreen.addSuccessfulBombPoint(

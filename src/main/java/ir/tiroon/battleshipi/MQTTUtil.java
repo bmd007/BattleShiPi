@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.eclipse.paho.client.mqttv3.*;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
+import java.nio.charset.Charset;
+import java.util.Base64;
 import java.util.Random;
 
 public class MQTTUtil {
@@ -60,7 +62,7 @@ public class MQTTUtil {
 
             String bombJson = objectMapper.writer().writeValueAsString(bomb);
 
-            MqttMessage message = new MqttMessage(bombJson.getBytes());
+            MqttMessage message = new MqttMessage(bombJson.getBytes(Charset.forName("UTF-8")));
             message.setQos(qos);
             mqttClient.publish(Main.playerNumber == 1 ? sendBombToPlayer2Topic : sendBombInfoToPlayer1Topic, message);
 
@@ -84,7 +86,7 @@ public class MQTTUtil {
 
             String bombToTellAboutJson = objectMapper.writer().writeValueAsString(bombToInformAbout);
 
-            MqttMessage message = new MqttMessage(bombToTellAboutJson.getBytes());
+            MqttMessage message = new MqttMessage(bombToTellAboutJson.getBytes(Charset.forName("UTF-8")));
             message.setQos(qos);
             mqttClient.publish(Main.playerNumber == 1 ? sendBombInfoToPlayer2Topic : sendBombInfoToPlayer1Topic,
                     message);
