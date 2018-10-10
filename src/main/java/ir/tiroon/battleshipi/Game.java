@@ -42,7 +42,7 @@ public class Game implements IMqttMessageListener {
         mapScreen = new MapScreen();
 
         mapScreen.showGlobeSight();
-        while (mapScreen.selectedLocations.size() != 5) SenseHatUtil.waitFor(4000);
+        while (mapScreen.selectedLocations.size() != 3) SenseHatUtil.waitFor(4000);
 
         mapScreen.vanishGlobeSight();
         System.out.println("Own Property Point Selection Phase Finished");
@@ -52,14 +52,14 @@ public class Game implements IMqttMessageListener {
         attackScreen = new AttackScreen();
         attackScreen.showGlobeSight();
 
-        while (attackScreen.selectedLocationsToSendBomb.size() != 7) SenseHatUtil.waitFor(4000);
+        while (attackScreen.selectedLocationsToSendBomb.size() != 4) SenseHatUtil.waitFor(4000);
 
         attackScreen.vanishGlobeSight();
         System.out.println("Bomb to Send Point Selection Phase Finished");
     }
 
     void phase3() {
-        SenseHatUtil.senseHat.ledMatrix.showMessage("" + score + "!");
+        SenseHatUtil.senseHat.ledMatrix.showMessage(""+score, (float) 0.4,Color.RED,Color.BLUE);
     }
 
     void phase4() {
