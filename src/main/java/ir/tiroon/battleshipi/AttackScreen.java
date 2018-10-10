@@ -2,27 +2,26 @@ package ir.tiroon.battleshipi;
 
 import rpi.sensehat.api.dto.Color;
 
-import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 public class AttackScreen extends Screen {
 
-    public volatile ArrayList<Point> selectedLocationsToSendBomb = new ArrayList<>(2);
+    public volatile Set<Point> selectedLocationsToSendBomb = new HashSet<>();
     //Show them in red
-    public volatile ArrayList<Point> successfulBombsLocations = new ArrayList<>(2);
+    public volatile Set<Point> successfulBombsLocations = new HashSet<>();
     //Show them in green
-    public volatile ArrayList<Point> waistedBombsLocations = new ArrayList<>(2);
+    public volatile Set<Point> waistedBombsLocations = new HashSet<>();
 
     public AttackScreen() {
         super();
     }
 
     public synchronized void addSuccessfulBombPoint(Point point) {
-        //Todo Should I light up this point now????
         successfulBombsLocations.add(point);
     }
 
     public synchronized void addWaistedBombPoint(Point point) {
-        //Todo Should I light up this point now????
         waistedBombsLocations.add(point);
     }
 
@@ -43,15 +42,10 @@ public class AttackScreen extends Screen {
 
     @Override
     public void reShowUp() {
-        for (int i = 0; i < selectedLocationsToSendBomb.size(); i++)
-            selectedLocationsToSendBomb.get(i).lightUp();
+        selectedLocationsToSendBomb.forEach(Point::lightUp);
 
-        for (int i = 0; i < successfulBombsLocations.size(); i++)
-            successfulBombsLocations.get(i).lightUp();
+        successfulBombsLocations.forEach(Point::lightUp);
 
-        for (int i = 0; i < waistedBombsLocations.size(); i++)
-            waistedBombsLocations.get(i).lightUp();
+        waistedBombsLocations.forEach(Point::lightUp);
     }
-
-
 }

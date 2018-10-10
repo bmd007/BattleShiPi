@@ -16,8 +16,8 @@ public class Game implements IMqttMessageListener {
 
     public Game() throws MqttException {
 
-        MQTTUtil.mqttClient.subscribe(MQTTUtil.bombard_topic,this);
-        MQTTUtil.mqttClient.subscribe(MQTTUtil.bomb_result_topic,this);
+        MQTTUtil.mqttClient.subscribe(MQTTUtil.bombard_topic, this);
+        MQTTUtil.mqttClient.subscribe(MQTTUtil.bomb_result_topic, this);
 
 
         cleanScreen();
@@ -48,7 +48,7 @@ public class Game implements IMqttMessageListener {
         mapScreen = new MapScreen();
 
         mapScreen.showGlobeSight();
-        while (mapScreen.selectedLocations.size() != 2) SenseHatUtil.waitFor(4000);
+        while (mapScreen.selectedLocations.size() != 1) SenseHatUtil.waitFor(4000);
 
         mapScreen.vanishGlobeSight();
         System.out.println("Own Property Point Selection Phase Finished");
@@ -58,15 +58,15 @@ public class Game implements IMqttMessageListener {
         attackScreen = new AttackScreen();
         attackScreen.showGlobeSight();
 
-        while (attackScreen.selectedLocationsToSendBomb.size() != 2) SenseHatUtil.waitFor(4000);
+        while (attackScreen.selectedLocationsToSendBomb.size() != 1) SenseHatUtil.waitFor(4000);
 
         attackScreen.vanishGlobeSight();
         System.out.println("Bomb to Send Point Selection Phase Finished");
     }
 
     void phase3() {
-        System.out.println("Score is"+score);
-        SenseHatUtil.senseHat.ledMatrix.showMessage(""+score, (float) 0.4,Color.RED,Color.BLUE);
+        System.out.println("Score is" + score);
+        SenseHatUtil.senseHat.ledMatrix.showMessage("" + score, (float) 0.5, Color.RED, Color.BLUE);
     }
 
     void phase4() {
@@ -86,20 +86,22 @@ public class Game implements IMqttMessageListener {
         //receive a bomb, check if it was good or bad, publish the result
         Bomb receivedBomb = (Bomb) MQTTUtil.objectMapper.reader().readValue(message.getPayload());
 
-        if (topic.equals(MQTTUtil.bomb_result_topic))
+        if (topic.equals(MQTTUtil.bomb_result_topic)) {
             if (receivedBomb.isSuccessful) {
                 attackScreen.addSuccessfulBombPoint(
                         new Point(receivedBomb.targetX, receivedBomb.targetY, Color.RED));
 
                 score++;
-            } else
+            } else {
                 attackScreen.addWaistedBombPoint(
                         new Point(receivedBomb.targetX, receivedBomb.targetY, Color.GREEN));
+            }
 
-
-        else if (topic.equals(MQTTUtil.bombard_topic))
+        } else if (topic.equals(MQTTUtil.bombard_topic)) {
             MQTTUtil.advertiseTheResultOfABomb(mapScreen.putABombOnMap(receivedBomb));
-
+        }else{
+            System.out.println("BMD::Wrong topic "+topic);
+        }
 
 
     }

@@ -2,12 +2,13 @@ package ir.tiroon.battleshipi;
 
 import rpi.sensehat.api.dto.Color;
 
-import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 public class MapScreen extends Screen {
 
-    public volatile ArrayList<Point> selectedLocations = new ArrayList<>(2);
-    public volatile ArrayList<Point> receivedBombs = new ArrayList<>(2);
+    public Set<Point> selectedLocations = new HashSet<>();
+    public Set<Point> receivedBombs = new HashSet<>();
 
     public MapScreen() {
         super();
@@ -30,11 +31,10 @@ public class MapScreen extends Screen {
 
         bomb.isSuccessful = false;
 
-        for (Point p : selectedLocations)
-            if (receivedBombPoint.isOnTheSameLocationAs(p)) {
+        selectedLocations.forEach(point -> {
+            if (receivedBombPoint.isOnTheSameLocationAs(point))
                 bomb.isSuccessful = true;
-                break;
-            }
+        });
 
 
         return bomb;
@@ -43,11 +43,9 @@ public class MapScreen extends Screen {
 
     @Override
     public void reShowUp() {
-        for (int i = 0; i < selectedLocations.size(); i++)
-            selectedLocations.get(i).lightUp();
+        selectedLocations.forEach(Point::lightUp);
 
-        for (int i = 0; i < receivedBombs.size(); i++)
-            receivedBombs.get(i).lightUp();
+        receivedBombs.forEach(Point::lightUp);
 
     }
 
