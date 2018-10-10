@@ -14,9 +14,12 @@ public class Game {
     static volatile int score;
 
     public static IMqttMessageListener bombReceiveListener = (topic, message) -> {
-        System.out.println("Message received from:"+topic+"::"+message.toString());
+//        System.out.println("Bomb received from:"+topic+"::"+message.toString());
 
         Bomb receivedBomb = MQTTUtil.objectMapper.reader().readValue(message.toString());
+        System.out.println("Bomb received from:"+topic+"::"+message.toString());
+
+        System.out.println("Bomb info advertising game class"+receivedBomb.isSuccessful);
 
         MQTTUtil.advertiseTheResultOfABomb(mapScreen.putABombOnMap(receivedBomb));
 
@@ -24,7 +27,7 @@ public class Game {
 
     //This Listener do not receive the message that it should receive
     public static IMqttMessageListener bombInfoReceiveListener = (topic, message) -> {
-        System.out.println("Message received from:"+topic+"::"+message.toString());
+        System.out.println("Bomb info received from:"+topic+"::"+message.toString());
 
         Bomb receivedBombInfo = MQTTUtil.objectMapper.reader().readValue(message.toString());
 
