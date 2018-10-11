@@ -17,9 +17,8 @@ public class Game {
 
         System.out.println("BMD:"+message.toString()+"::"+message+"::"+new String(message.getPayload()));
 
-        Bomb receivedBomb = new ObjectMapper().reader().readValue(message.toString());
+        Bomb receivedBomb = new ObjectMapper().readValue(message.toString(), Bomb.class);
 
-        //Todo @Vlad This two lines below won't execute?? WHY???
         System.out.println("Bomb info advertising game class"+receivedBomb.isSuccessful);
 
         MQTTUtil.advertiseTheResultOfABomb(mapScreen.putABombOnMap(receivedBomb));
@@ -27,9 +26,10 @@ public class Game {
     };
 
     public static IMqttMessageListener bombInfoReceiveListener = (topic, message) -> {
+
         System.out.println("Bomb info received from:"+topic+"::"+message.toString());
 
-        Bomb receivedBombInfo = new ObjectMapper().reader().readValue(message.toString());
+        Bomb receivedBombInfo = new ObjectMapper().readValue(message.toString(), Bomb.class);
 
         if (receivedBombInfo.isSuccessful) {
             attackScreen.addSuccessfulBombPoint(
