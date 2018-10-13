@@ -21,11 +21,9 @@ public class Game {
 
     public static IMqttMessageListener bombReceiveListener = (topic, message) -> {
 
-        System.out.println("BMD:" + message.toString() + "::" + message + "::" + new String(message.getPayload()));
+        System.out.println("Bomb received:" + message.toString() + "::" + message + "::" + new String(message.getPayload()));
 
         Bomb receivedBomb = new ObjectMapper().readValue(message.toString(), Bomb.class);
-
-        System.out.println("Bomb info advertising game class" + receivedBomb.isSuccessful);
 
         MQTTUtil.advertiseTheResultOfABomb(mapScreen.putABombOnMap(receivedBomb));
 
@@ -49,10 +47,20 @@ public class Game {
     };
 
     public static IMqttMessageListener gameFinishedListener = (topic, message) -> {
-        opponentsGameFinished = true;
+        System.out.println("Game Finished Listener");
         System.out.println(new ObjectMapper().readValue(message.toString(), Boolean.class)+"::Game finished?");
+        setOpponentsGameFinished(true);
     };
-    
+
+
+    public synchronized static Boolean getOpponentsGameFinished() {
+        return opponentsGameFinished;
+    }
+
+    public synchronized static void setOpponentsGameFinished(Boolean opponentsGameFinished) {
+        Game.opponentsGameFinished = opponentsGameFinished;
+    }
+///////////////////////////////////////
     public Game() throws MqttException {
 
         MQTTUtil.mqttClient.subscribe(Main.playerNumber == 1 ? MQTTUtil.sendBombInfoToPlayer1Topic : MQTTUtil
@@ -74,7 +82,7 @@ public class Game {
         MQTTUtil.sendGameFinished(opponentsGameFinished);
 
         //Waiting for opponents game to be finished
-        while (!opponentsGameFinished) {
+        while (!getOpponentsGameFinished()) {
             SenseHatUtil.waitFor(3000);
             //Todo Maybe showing some message here or nice sound about waiting for others
         }

@@ -21,7 +21,6 @@ public class MapScreen extends Screen {
         //The copy should be yellow
 
         selectedLocations.add(new Point(point));
-        System.out.println("New Point added to Map selected points>"+point.x+":"+point.y);
 
         changeGlobeSightLocationToStart();
     }
@@ -30,10 +29,7 @@ public class MapScreen extends Screen {
 
         Point receivedBombPoint = new Point(bomb.targetX, bomb.targetY, Color.RED);
 
-        System.out.println("BMD::putOnMapCheck>"+selectedLocations.size());
-
         receivedBombs.add(receivedBombPoint);
-        System.out.println("New Point added to Map received bombs>"+receivedBombPoint.x+":"+receivedBombPoint.y);
 
         bomb.isSuccessful = false;
 
