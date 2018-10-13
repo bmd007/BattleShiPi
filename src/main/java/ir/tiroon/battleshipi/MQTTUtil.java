@@ -67,7 +67,7 @@ public class MQTTUtil {
             MQTTUtil.mqttClient.publish(Main.playerNumber == 1 ? MQTTUtil.advertisePlayer1GameFinishedToPlayer2Topic : MQTTUtil.advertisePlayer2GameFinishedToPlayer1Topic
                     , new MqttMessage(("Game finished").getBytes(Charset.forName("UTF-8"))));
 
-            System.out.println("Game is finished");
+            System.out.println("My Game is finished message published");
 
         } catch (MqttPersistenceException e) {
             e.printStackTrace();

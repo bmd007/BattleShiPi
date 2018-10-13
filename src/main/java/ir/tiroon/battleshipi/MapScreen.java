@@ -7,7 +7,6 @@ import java.util.Set;
 
 public class MapScreen extends Screen {
 
-    //may only this one should be volite
     public Set<Point> selectedLocations = new HashSet<>();
     public Set<Point> receivedBombs = new HashSet<>();
 
@@ -21,7 +20,6 @@ public class MapScreen extends Screen {
         //The copy should be yellow
         Point temp = new Point(point);
         selectedLocations.add(temp);
-            if (temp == null)System.err.println("WTF WTF");
 
         changeGlobeSightLocationToStart();
     }

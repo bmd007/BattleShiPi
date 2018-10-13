@@ -77,25 +77,25 @@ public class Game {
         MQTTUtil.sendGameFinished();
 
         //Waiting for opponents game to be finished
-//        while (!getOpponentsGameFinished()) {
-//            System.out.print("*");
-//            SenseHatUtil.waitFor(3000);
-//            //Todo Maybe showing some message here or nice sound about waiting for others
-//        }
+        while (!getOpponentsGameFinished()) {
+            System.out.print("*");
+            SenseHatUtil.waitFor(3000);
+            //Todo Maybe showing some message here or nice sound about waiting for others
+        }
         SenseHatUtil.waitFor(4000);
         cleanScreen();
         phase3();
 
-        SenseHatUtil.waitFor(3000);
+        SenseHatUtil.waitFor(10000);
         cleanScreen();
         phase4();
 
 
-        SenseHatUtil.waitFor(8000);
+        SenseHatUtil.waitFor(25000);
         cleanScreen();
         phase5();
 
-        SenseHatUtil.waitFor(8000);
+        SenseHatUtil.waitFor(25000);
         cleanScreen();
         phase3();
 
