@@ -18,6 +18,8 @@ public class Main {
         }
         while (!MQTTUtil.mqttClient.isConnected()) { }
 
+        System.out.println((Main.playerNumber == 1)+"::");
+
         Game game = new Game();
     }
 }

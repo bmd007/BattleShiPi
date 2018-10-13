@@ -21,7 +21,7 @@ public class MQTTUtil {
     public static String advertisePlayer2GameFinishedToPlayer1Topic = "advertisePlayer2GameFinished";
 
     public static ObjectMapper objectMapper = new ObjectMapper();
-    static int qos = 2;
+    static int qos = 1;
     static MemoryPersistence persistence = new MemoryPersistence();
     public static MqttClient mqttClient;
     static String brokerIPAddress;
@@ -63,9 +63,7 @@ public class MQTTUtil {
 
         try {
             MQTTUtil.mqttClient.publish(Main.playerNumber == 1 ? MQTTUtil.advertisePlayer1GameFinishedToPlayer2Topic : MQTTUtil.advertisePlayer2GameFinishedToPlayer1Topic
-                    , new MqttMessage(new ObjectMapper().writeValueAsBytes(true)));
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
+                    , new MqttMessage(("Game finished on "+Main.playerNumber+"'s side finished").getBytes(Charset.forName("UTF-8"))));
         } catch (MqttPersistenceException e) {
             e.printStackTrace();
         } catch (MqttException e) {
