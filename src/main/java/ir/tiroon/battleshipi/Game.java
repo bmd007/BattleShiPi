@@ -48,10 +48,11 @@ public class Game {
 
     };
 
-    public static IMqttMessageListener gameFinishedListener = (topic, message) ->
-            opponentsGameFinished = true;
-                    //new ObjectMapper().readValue(message.toString(), Boolean.class);
-
+    public static IMqttMessageListener gameFinishedListener = (topic, message) -> {
+        opponentsGameFinished = true;
+        System.out.println(new ObjectMapper().readValue(message.toString(), Boolean.class)+"::Game finished?");
+    };
+    
     public Game() throws MqttException {
 
         MQTTUtil.mqttClient.subscribe(Main.playerNumber == 1 ? MQTTUtil.sendBombInfoToPlayer1Topic : MQTTUtil
