@@ -1,8 +1,10 @@
 package ir.tiroon.battleshipi;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.eclipse.paho.client.mqttv3.IMqttMessageListener;
 import org.eclipse.paho.client.mqttv3.MqttException;
+import org.eclipse.paho.client.mqttv3.MqttMessage;
 import rpi.sensehat.api.dto.Color;
 
 public class Game {
@@ -13,13 +15,17 @@ public class Game {
 
     static volatile int score;
 
+
+    //Todo: change everything about story of "game finished" to "phase 2 finished"
+    static volatile Boolean opponentsGameFinished = false;
+
     public static IMqttMessageListener bombReceiveListener = (topic, message) -> {
 
-        System.out.println("BMD:"+message.toString()+"::"+message+"::"+new String(message.getPayload()));
+        System.out.println("BMD:" + message.toString() + "::" + message + "::" + new String(message.getPayload()));
 
         Bomb receivedBomb = new ObjectMapper().readValue(message.toString(), Bomb.class);
 
-        System.out.println("Bomb info advertising game class"+receivedBomb.isSuccessful);
+        System.out.println("Bomb info advertising game class" + receivedBomb.isSuccessful);
 
         MQTTUtil.advertiseTheResultOfABomb(mapScreen.putABombOnMap(receivedBomb));
 
@@ -27,7 +33,7 @@ public class Game {
 
     public static IMqttMessageListener bombInfoReceiveListener = (topic, message) -> {
 
-        System.out.println("Bomb info received from:"+topic+"::"+message.toString());
+        System.out.println("Bomb info received from:" + topic + "::" + message.toString());
 
         Bomb receivedBombInfo = new ObjectMapper().readValue(message.toString(), Bomb.class);
 
@@ -42,6 +48,8 @@ public class Game {
 
     };
 
+    public static IMqttMessageListener gameFinishedListener = (topic, message) -> opponentsGameFinished = new ObjectMapper().readValue(message.toString(), Boolean.class);
+
     public Game() throws MqttException {
 
         MQTTUtil.mqttClient.subscribe(Main.playerNumber == 1 ? MQTTUtil.sendBombInfoToPlayer1Topic : MQTTUtil
@@ -50,6 +58,8 @@ public class Game {
         MQTTUtil.mqttClient.subscribe(Main.playerNumber == 1 ? MQTTUtil.sendBombToPlayer1Topic : MQTTUtil
                 .sendBombToPlayer2Topic, bombReceiveListener);
 
+        MQTTUtil.mqttClient.subscribe(Main.playerNumber == 1 ? MQTTUtil.advertisePlayer2GameFinishedToPlayer1Topic : MQTTUtil.advertisePlayer1GameFinishedToPlayer2Topic);
+
         ///////////////////////////
         cleanScreen();
         phase1();
@@ -57,11 +67,19 @@ public class Game {
         cleanScreen();
         phase2();
 
+
+        MQTTUtil.sendGameFinished(opponentsGameFinished);
+
+        //Waiting for opponents game to be finished
+        while (!opponentsGameFinished) {
+            SenseHatUtil.waitFor(3000);
+            //Todo Maybe showing some message here or nice sound about waiting for others
+        }
         SenseHatUtil.waitFor(4000);
         cleanScreen();
         phase3();
 
-        SenseHatUtil.waitFor(4000);
+        SenseHatUtil.waitFor(3000);
         cleanScreen();
         phase4();
 

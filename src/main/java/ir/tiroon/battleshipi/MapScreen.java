@@ -19,7 +19,9 @@ public class MapScreen extends Screen {
     public void pointSelected(Point point) {
         point.stopBlinkingAndLightUp(Color.of(255, 255, 0));
         //The copy should be yellow
+
         selectedLocations.add(new Point(point));
+        System.out.println("New Point added to Map selected points>"+point.x+":"+point.y);
 
         changeGlobeSightLocationToStart();
     }
@@ -31,6 +33,7 @@ public class MapScreen extends Screen {
         System.out.println("BMD::putOnMapCheck>"+selectedLocations.size());
 
         receivedBombs.add(receivedBombPoint);
+        System.out.println("New Point added to Map received bombs>"+receivedBombPoint.x+":"+receivedBombPoint.y);
 
         bomb.isSuccessful = false;
 
@@ -49,7 +52,6 @@ public class MapScreen extends Screen {
         selectedLocations.forEach(Point::lightUp);
 
         receivedBombs.forEach(Point::lightUp);
-
     }
 
 }

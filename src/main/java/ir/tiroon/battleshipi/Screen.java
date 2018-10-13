@@ -45,6 +45,7 @@ public abstract class Screen implements Runnable {
             case UP: {
 
                 if (tempY - 1 > -1)
+                    //What if I write  like = new Point(tempX,tempX-1,temp.privousColor);
                     globeSight = points[tempX][tempY - 1];
                 break;
             }

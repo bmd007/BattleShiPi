@@ -17,6 +17,8 @@ public class MQTTUtil {
     public static String sendBombToPlayer2Topic = "sendBombToPlayer2Topic";
     public static String sendBombInfoToPlayer1Topic = "sendBombInfoToPlayer1Topic";
     public static String sendBombInfoToPlayer2Topic = "sendBombInfoToPlayer2Topic";
+    public static String advertisePlayer1GameFinishedToPlayer2Topic = "advertisePlayer1GameFinished";
+    public static String advertisePlayer2GameFinishedToPlayer1Topic = "advertisePlayer2GameFinished";
 
     public static ObjectMapper objectMapper = new ObjectMapper();
     static int qos = 2;
@@ -50,6 +52,22 @@ public class MQTTUtil {
             MQTTUtil.mqttClient.subscribe(Main.playerNumber == 1 ? MQTTUtil.sendBombInfoToPlayer1Topic : MQTTUtil
                     .sendBombInfoToPlayer2Topic, Game.bombInfoReceiveListener);
 
+            MQTTUtil.mqttClient.subscribe(Main.playerNumber == 1 ? MQTTUtil.advertisePlayer2GameFinishedToPlayer1Topic : MQTTUtil.advertisePlayer1GameFinishedToPlayer2Topic);
+
+        } catch (MqttException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void sendGameFinished(Boolean opponentsGameFinished){
+
+        try {
+            MQTTUtil.mqttClient.publish(Main.playerNumber == 1 ? MQTTUtil.advertisePlayer1GameFinishedToPlayer2Topic : MQTTUtil.advertisePlayer2GameFinishedToPlayer1Topic
+                    , new MqttMessage(new ObjectMapper().writeValueAsBytes(opponentsGameFinished)));
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        } catch (MqttPersistenceException e) {
+            e.printStackTrace();
         } catch (MqttException e) {
             e.printStackTrace();
         }
@@ -82,7 +100,7 @@ public class MQTTUtil {
         try {
             if (!mqttClient.isConnected()) connect();
 
-            System.out.println("I am advertising:"+Main.playerNumber);
+            System.out.println("I am advertising:" + Main.playerNumber);
 
             String bombToTellAboutJson = objectMapper.writer().writeValueAsString(bombToInformAbout);
 
