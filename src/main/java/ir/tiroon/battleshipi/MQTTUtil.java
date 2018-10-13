@@ -84,6 +84,7 @@ public class MQTTUtil {
             message.setQos(qos);
             mqttClient.publish(Main.playerNumber == 1 ? sendBombToPlayer2Topic : sendBombInfoToPlayer1Topic, message);
 
+            System.out.println("Bomb send to:"+ (Main.playerNumber == 1 ? sendBombToPlayer2Topic : sendBombInfoToPlayer1Topic) +"::"+ message)
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         } catch (MqttPersistenceException e) {
@@ -102,7 +103,7 @@ public class MQTTUtil {
 
             System.out.println("I am advertising:" + Main.playerNumber);
 
-            String bombToTellAboutJson = objectMapper.writer().writeValueAsString(bombToInformAbout);
+            String bombToTellAboutJson = objectMapper.writeValueAsString(bombToInformAbout);
 
             MqttMessage message = new MqttMessage(bombToTellAboutJson.getBytes(Charset.forName("UTF-8")));
             message.setQos(qos);

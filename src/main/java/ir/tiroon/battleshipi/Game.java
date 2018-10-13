@@ -21,7 +21,7 @@ public class Game {
 
     public static IMqttMessageListener bombReceiveListener = (topic, message) -> {
 
-        System.out.println("Bomb received:" + message.toString() + "::" + message + "::" + new String(message.getPayload()));
+        System.out.println("Bomb received:" + topic + "::" +message);
 
         Bomb receivedBomb = new ObjectMapper().readValue(message.toString(), Bomb.class);
 
