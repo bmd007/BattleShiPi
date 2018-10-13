@@ -46,13 +46,15 @@ public class MQTTUtil {
             connOpts.setAutomaticReconnect(true);
             mqttClient.connect(connOpts);
 
-            MQTTUtil.mqttClient.subscribe(Main.playerNumber == 1 ? MQTTUtil.sendBombToPlayer1Topic : MQTTUtil
-                    .sendBombToPlayer2Topic, Game.bombReceiveListener);
-
             MQTTUtil.mqttClient.subscribe(Main.playerNumber == 1 ? MQTTUtil.sendBombInfoToPlayer1Topic : MQTTUtil
                     .sendBombInfoToPlayer2Topic, Game.bombInfoReceiveListener);
 
-            MQTTUtil.mqttClient.subscribe(Main.playerNumber == 1 ? MQTTUtil.advertisePlayer2GameFinishedToPlayer1Topic : MQTTUtil.advertisePlayer1GameFinishedToPlayer2Topic);
+            MQTTUtil.mqttClient.subscribe(Main.playerNumber == 1 ? MQTTUtil.sendBombToPlayer1Topic : MQTTUtil
+                    .sendBombToPlayer2Topic, Game.bombReceiveListener);
+
+            MQTTUtil.mqttClient.subscribe(Main.playerNumber == 1 ? MQTTUtil.advertisePlayer2GameFinishedToPlayer1Topic : MQTTUtil.advertisePlayer1GameFinishedToPlayer2Topic,
+                    Game.gameFinishedListener);
+
 
         } catch (MqttException e) {
             e.printStackTrace();
@@ -80,9 +82,9 @@ public class MQTTUtil {
 
             MqttMessage message = new MqttMessage(bombJson.getBytes(Charset.forName("UTF-8")));
             message.setQos(qos);
-            mqttClient.publish(Main.playerNumber == 1 ? sendBombToPlayer2Topic : sendBombInfoToPlayer1Topic, message);
+            mqttClient.publish(Main.playerNumber == 1 ? MQTTUtil.sendBombToPlayer2Topic : MQTTUtil.sendBombInfoToPlayer1Topic, message);
 
-            System.out.println("Bomb send to:"+ (Main.playerNumber == 1 ? sendBombToPlayer2Topic : sendBombInfoToPlayer1Topic) +"::"+ message);
+            System.out.println("Bomb send to:"+ (Main.playerNumber == 1 ? MQTTUtil.sendBombToPlayer2Topic : MQTTUtil.sendBombInfoToPlayer1Topic) +"::"+ message);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         } catch (MqttPersistenceException e) {
@@ -99,13 +101,13 @@ public class MQTTUtil {
         try {
             if (!mqttClient.isConnected()) connect();
 
-            System.out.println("I am advertising:" + Main.playerNumber);
+            System.out.println("{I} am advertising," + Main.playerNumber);
 
             String bombToTellAboutJson = objectMapper.writeValueAsString(bombToInformAbout);
 
             MqttMessage message = new MqttMessage(bombToTellAboutJson.getBytes(Charset.forName("UTF-8")));
             message.setQos(qos);
-            mqttClient.publish(Main.playerNumber == 1 ? sendBombInfoToPlayer2Topic : sendBombInfoToPlayer1Topic,
+            mqttClient.publish(Main.playerNumber == 1 ? MQTTUtil.sendBombInfoToPlayer2Topic : MQTTUtil.sendBombInfoToPlayer1Topic,
                     message);
 
             System.out.println("I am advertised");

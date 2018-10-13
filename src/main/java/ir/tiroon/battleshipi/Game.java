@@ -54,13 +54,7 @@ public class Game {
 ///////////////////////////////////////
     public Game() throws MqttException {
 
-        MQTTUtil.mqttClient.subscribe(Main.playerNumber == 1 ? MQTTUtil.sendBombInfoToPlayer1Topic : MQTTUtil
-                .sendBombInfoToPlayer2Topic, bombInfoReceiveListener);
-
-        MQTTUtil.mqttClient.subscribe(Main.playerNumber == 1 ? MQTTUtil.sendBombToPlayer1Topic : MQTTUtil
-                .sendBombToPlayer2Topic, bombReceiveListener);
-
-        MQTTUtil.mqttClient.subscribe(Main.playerNumber == 1 ? MQTTUtil.advertisePlayer2GameFinishedToPlayer1Topic : MQTTUtil.advertisePlayer1GameFinishedToPlayer2Topic);
+        MQTTUtil.connect();
 
         ///////////////////////////
         cleanScreen();
