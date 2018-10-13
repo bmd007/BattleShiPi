@@ -59,11 +59,11 @@ public class MQTTUtil {
         }
     }
 
-    public static void sendGameFinished(Boolean opponentsGameFinished){
+    public static void sendGameFinished(){
 
         try {
             MQTTUtil.mqttClient.publish(Main.playerNumber == 1 ? MQTTUtil.advertisePlayer1GameFinishedToPlayer2Topic : MQTTUtil.advertisePlayer2GameFinishedToPlayer1Topic
-                    , new MqttMessage(new ObjectMapper().writeValueAsBytes(opponentsGameFinished)));
+                    , new MqttMessage(new ObjectMapper().writeValueAsBytes(true)));
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         } catch (MqttPersistenceException e) {
@@ -84,7 +84,7 @@ public class MQTTUtil {
             message.setQos(qos);
             mqttClient.publish(Main.playerNumber == 1 ? sendBombToPlayer2Topic : sendBombInfoToPlayer1Topic, message);
 
-            System.out.println("Bomb send to:"+ (Main.playerNumber == 1 ? sendBombToPlayer2Topic : sendBombInfoToPlayer1Topic) +"::"+ message)
+            System.out.println("Bomb send to:"+ (Main.playerNumber == 1 ? sendBombToPlayer2Topic : sendBombInfoToPlayer1Topic) +"::"+ message);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         } catch (MqttPersistenceException e) {
