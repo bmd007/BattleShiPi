@@ -82,7 +82,7 @@ public class MQTTUtil {
 
             MqttMessage message = new MqttMessage(bombJson.getBytes(Charset.forName("UTF-8")));
             message.setQos(qos);
-            mqttClient.publish(Main.playerNumber == 1 ? MQTTUtil.sendBombToPlayer2Topic : MQTTUtil.sendBombInfoToPlayer1Topic, message);
+            mqttClient.publish(Main.playerNumber == 1 ? MQTTUtil.sendBombToPlayer2Topic : MQTTUtil.sendBombToPlayer1Topic, message);
 
             System.out.println("Bomb send to:"+ (Main.playerNumber == 1 ? MQTTUtil.sendBombToPlayer2Topic : MQTTUtil.sendBombInfoToPlayer1Topic) +"::"+ message);
         } catch (JsonProcessingException e) {
@@ -100,8 +100,6 @@ public class MQTTUtil {
     public static void advertiseTheResultOfABomb(Bomb bombToInformAbout) {
         try {
             if (!mqttClient.isConnected()) connect();
-
-            System.out.println("{I} am advertising," + Main.playerNumber);
 
             String bombToTellAboutJson = objectMapper.writeValueAsString(bombToInformAbout);
 

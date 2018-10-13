@@ -18,11 +18,6 @@ public class Main {
         }
         while (!MQTTUtil.mqttClient.isConnected()) { }
 
-        System.out.println((Main.playerNumber == 1)+"::"+(Main.playerNumber == 1 ? MQTTUtil.sendBombToPlayer1Topic : MQTTUtil
-                .sendBombToPlayer2Topic));
-
-        System.out.println(Main.playerNumber == 1 ? MQTTUtil.sendBombToPlayer2Topic : MQTTUtil.sendBombInfoToPlayer1Topic);
-
         Game game = new Game();
     }
 }
