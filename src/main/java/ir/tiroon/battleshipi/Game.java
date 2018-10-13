@@ -48,7 +48,9 @@ public class Game {
 
     };
 
-    public static IMqttMessageListener gameFinishedListener = (topic, message) -> opponentsGameFinished = new ObjectMapper().readValue(message.toString(), Boolean.class);
+    public static IMqttMessageListener gameFinishedListener = (topic, message) ->
+            opponentsGameFinished = true;
+                    //new ObjectMapper().readValue(message.toString(), Boolean.class);
 
     public Game() throws MqttException {
 
