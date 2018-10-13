@@ -54,7 +54,6 @@ public class Game {
 ///////////////////////////////////////
     public Game() throws MqttException {
 
-        MQTTUtil.connect();
 
         ///////////////////////////
         cleanScreen();
