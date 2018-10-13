@@ -65,7 +65,7 @@ public class Game {
     ///////////////////////////////////////
     public Game() throws MqttException {
 
-
+        //Todo start background music
         ///////////////////////////
         cleanScreen();
         phase1();
@@ -85,13 +85,15 @@ public class Game {
 //            SenseHatUtil.waitFor(3000);
 //        }
 
-        MQTTUtil.sendGameFinished();
+        //MQTTUtil.sendGameFinished();
 
+
+        //Todo show text about phase 4 screen
         SenseHatUtil.waitFor(10000);
         cleanScreen();
         phase4();
 
-
+        //Todo show text about phase 5 screen
         SenseHatUtil.waitFor(25000);
         cleanScreen();
         phase5();
@@ -100,15 +102,18 @@ public class Game {
         cleanScreen();
         phase3();
 
+        //Todo finish background music
+
     }
 
     void phase1() {
         mapScreen = new MapScreen();
-
         mapScreen.showGlobeSight();
+
         while (mapScreen.selectedLocations.size() != numberOfOwnPropertiesToSelect) SenseHatUtil.waitFor(4000);
 
         mapScreen.vanishGlobeSight();
+
         System.out.println("Own Property Point Selection Phase Finished");
     }
 
@@ -119,12 +124,13 @@ public class Game {
         while (attackScreen.selectedLocationsToSendBomb.size() != numberOfBombsToSend) SenseHatUtil.waitFor(4000);
 
         attackScreen.vanishGlobeSight();
+
         System.out.println("Bomb to Send Point Selection Phase Finished");
     }
 
     void phase3() {
         System.out.println("Score is" + score);
-        SenseHatUtil.senseHat.ledMatrix.showMessage("" + score, (float) 0.5, Color.RED, Color.BLUE);
+        SenseHatUtil.senseHat.ledMatrix.showMessage("Score = " + score, (float) 0.5, Color.RED, Color.BLUE);
     }
 
     void phase4() {

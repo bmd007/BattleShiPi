@@ -6,6 +6,7 @@ public class Main {
 
     public static int playerNumber;
 
+    //Todo later removed system.out.println ....
     public static void main(String[] args) throws MqttException {
 
         String brokerIP  = args[0];

@@ -45,7 +45,11 @@ public class AttackScreen extends Screen {
     public void reShowUp() {
         selectedLocationsToSendBomb.forEach(Point::lightUp);
 
+        SenseHatUtil.waitFor(4000);
+
         successfulBombsLocations.forEach(Point::lightUp);
+
+        SenseHatUtil.waitFor(4000);
 
         waistedBombsLocations.forEach(Point::lightUp);
     }

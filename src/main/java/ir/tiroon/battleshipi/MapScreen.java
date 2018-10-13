@@ -44,7 +44,10 @@ public class MapScreen extends Screen {
 
     @Override
     public void reShowUp() {
+
         selectedLocations.forEach(Point::lightUp);
+
+        SenseHatUtil.waitFor(4000);
 
         receivedBombs.forEach(Point::lightUp);
     }
