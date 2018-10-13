@@ -6,23 +6,12 @@ import rpi.sensehat.api.dto.joystick.Direction;
 
 public abstract class Screen implements Runnable {
 
-    //We can remove it, just some re code is needed
-    Point points[][] = new Point[8][8];
-
     Point globeSight = null;
 
     volatile boolean globeSightVisible = false;
 
-    public Screen() {
-
-        for (int i = 0; i < 8; i++)
-            for (int j = 0; j < 8; j++)
-                points[i][j] = new Point(i, j, Color.of(0, 0, 0));
-    }
-
-
     public void showGlobeSight() {
-        globeSight = points[0][0];
+        globeSight = new Point(0,0,Color.of(0,0,0));
         globeSight.startBlinking();
         globeSightVisible = true;
         new Thread(this, "joystickEventThread").start();
@@ -45,23 +34,22 @@ public abstract class Screen implements Runnable {
             case UP: {
 
                 if (tempY - 1 > -1)
-                    //What if I write  like = new Point(tempX,tempX-1,temp.privousColor);
-                    globeSight = points[tempX][tempY - 1];
+                    globeSight = new Point(tempX,tempY - 1, tempPoint.getPreviousColor());
                 break;
             }
             case DOWN: {
                 if (tempY + 1 < 8)
-                    globeSight = points[tempX][tempY + 1];
+                    globeSight = new Point(tempX,tempY + 1, tempPoint.getPreviousColor());
                 break;
             }
             case RIGHT: {
                 if (tempX + 1 < 8)
-                    globeSight = points[tempX + 1][tempY];
+                    globeSight = new Point(tempX + 1, tempY, tempPoint.getPreviousColor());
                 break;
             }
             case LEFT: {
                 if (tempX - 1 > -1)
-                    globeSight = points[tempX - 1][tempY];
+                    globeSight = new Point(tempX - 1, tempY, tempPoint.getPreviousColor());
                 break;
             }
         }
@@ -74,7 +62,7 @@ public abstract class Screen implements Runnable {
     void changeGlobeSightLocationToStart() {
         globeSight.stopBlinking();
 
-        globeSight = points[0][0];
+        globeSight = new Point(0,0,Color.of(0,0,0));
 
         globeSight.startBlinking();
     }
