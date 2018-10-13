@@ -27,6 +27,7 @@ public class AttackScreen extends Screen {
 
     @Override
     public void pointSelected(Point point) {
+
         point.stopBlinkingAndLightUp(Color.RED);
 
         Point bombLocation = new Point(point);
@@ -45,11 +46,11 @@ public class AttackScreen extends Screen {
     public void reShowUp() {
         selectedLocationsToSendBomb.forEach(Point::lightUp);
 
-        SenseHatUtil.waitFor(4000);
+        SenseHatUtil.waitFor(2000);
 
         successfulBombsLocations.forEach(Point::lightUp);
 
-        SenseHatUtil.waitFor(4000);
+        SenseHatUtil.waitFor(2000);
 
         waistedBombsLocations.forEach(Point::lightUp);
     }

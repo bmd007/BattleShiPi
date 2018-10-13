@@ -6,7 +6,6 @@ import org.eclipse.paho.client.mqttv3.*;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
 import java.nio.charset.Charset;
-import java.util.Base64;
 import java.util.Random;
 
 public class MQTTUtil {
@@ -21,9 +20,9 @@ public class MQTTUtil {
     public static String advertisePlayer2GameFinishedToPlayer1Topic = "advertisePlayer2GameFinished";
 
     public static ObjectMapper objectMapper = new ObjectMapper();
+    public static MqttClient mqttClient;
     static int qos = 2;
     static MemoryPersistence persistence = new MemoryPersistence();
-    public static MqttClient mqttClient;
     static String brokerIPAddress;
 
     public static void MQTTUtilConnect(String brokerIPAddress) throws Exception {

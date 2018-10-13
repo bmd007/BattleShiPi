@@ -1,37 +1,17 @@
 package ir.tiroon.battleshipi;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.eclipse.paho.client.mqttv3.IMqttMessageListener;
 import org.eclipse.paho.client.mqttv3.MqttException;
-import org.eclipse.paho.client.mqttv3.MqttMessage;
 import rpi.sensehat.api.dto.Color;
 
 public class Game {
 
-    static MapScreen mapScreen;
-
-    static AttackScreen attackScreen;
-
-    static volatile int score;
-
     public static final int numberOfBombsToSend = 3;
-
     public static final int numberOfOwnPropertiesToSelect = 2;
-
-    //Todo: change everything about story of "game finished" to "phase 2 finished"
-    static volatile Boolean opponentsGameFinished = false;
-
-    public static IMqttMessageListener bombReceiveListener = (topic, message) -> {
-
-        System.out.println("Bomb received:" + topic + "::" +message);
-
-        Bomb receivedBomb = new ObjectMapper().readValue(message.toString(), Bomb.class);
-
-        MQTTUtil.advertiseTheResultOfABomb(mapScreen.putABombOnMap(receivedBomb));
-
-    };
-
+    static MapScreen mapScreen;
+    static AttackScreen attackScreen;
+    static volatile int score;
     public static IMqttMessageListener bombInfoReceiveListener = (topic, message) -> {
 
         System.out.println("Bomb info received from:" + topic + "::" + message.toString());
@@ -48,19 +28,21 @@ public class Game {
                     new Point(receivedBombInfo.targetX, receivedBombInfo.targetY, Color.GREEN));
 
     };
-
+    //Todo: change everything about story of "game finished" to "phase 2 finished"
+    static volatile Boolean opponentsGameFinished = false;
     public static IMqttMessageListener gameFinishedListener = (topic, message) -> {
-        System.out.println(new ObjectMapper().readValue(message.toString(), Boolean.class)+"::Game finished?");
+        System.out.println(new ObjectMapper().readValue(message.toString(), Boolean.class) + "::Game finished?");
         setOpponentsGameFinished(true);
     };
+    public static IMqttMessageListener bombReceiveListener = (topic, message) -> {
 
-    public synchronized static Boolean getOpponentsGameFinished() {
-        return opponentsGameFinished;
-    }
+        System.out.println("Bomb received:" + topic + "::" + message);
 
-    public synchronized static void setOpponentsGameFinished(Boolean opponentsGameFinished) {
-        Game.opponentsGameFinished = opponentsGameFinished;
-    }
+        Bomb receivedBomb = new ObjectMapper().readValue(message.toString(), Bomb.class);
+
+        MQTTUtil.advertiseTheResultOfABomb(mapScreen.putABombOnMap(receivedBomb));
+
+    };
 
     ///////////////////////////////////////
     public Game() throws MqttException {
@@ -106,6 +88,14 @@ public class Game {
 
     }
 
+    public synchronized static Boolean getOpponentsGameFinished() {
+        return opponentsGameFinished;
+    }
+
+    public synchronized static void setOpponentsGameFinished(Boolean opponentsGameFinished) {
+        Game.opponentsGameFinished = opponentsGameFinished;
+    }
+
     void phase1() {
         mapScreen = new MapScreen();
         mapScreen.showGlobeSight();
@@ -130,7 +120,7 @@ public class Game {
 
     void phase3() {
         System.out.println("Score is" + score);
-        SenseHatUtil.senseHat.ledMatrix.showMessage("Score = " + score, (float) 0.5, Color.RED, Color.BLUE);
+        SenseHatUtil.senseHat.ledMatrix.showMessage("" + score, (float) 0.5, Color.RED, Color.BLUE);
     }
 
     void phase4() {

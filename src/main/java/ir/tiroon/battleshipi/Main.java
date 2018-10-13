@@ -7,9 +7,10 @@ public class Main {
     public static int playerNumber;
 
     //Todo later removed system.out.println ....
+    //Todo  later replace yellow  with green
     public static void main(String[] args) throws MqttException {
 
-        String brokerIP  = args[0];
+        String brokerIP = args[0];
         playerNumber = Integer.valueOf(args[1]);
 
         try {
@@ -17,8 +18,9 @@ public class Main {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        while (!MQTTUtil.mqttClient.isConnected()) { }
+        while (!MQTTUtil.mqttClient.isConnected()) {
+        }
 
-        Game game = new Game();
+        new Game();
     }
 }

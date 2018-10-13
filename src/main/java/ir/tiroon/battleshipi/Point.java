@@ -49,8 +49,9 @@ public class Point implements Runnable {
     }
 
     public void lightUp() {
-        if (blinkingThread!=null)
-            while (blinkingThread.isAlive()){}
+        if (blinkingThread != null)
+            while (blinkingThread.isAlive()) {
+            }
 
         SenseHatUtil.senseHat.ledMatrix.setPixel(x, y, this.color);
     }
@@ -66,7 +67,6 @@ public class Point implements Runnable {
         blinkingThread.start();
     }
 
-    //The blinkingThread won't notice that blinking has set to false!:(
     public void stopBlinking() {
         setBlinking(false);
         lightUp(previousColor);

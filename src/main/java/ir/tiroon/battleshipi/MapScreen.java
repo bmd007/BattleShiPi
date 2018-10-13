@@ -47,7 +47,7 @@ public class MapScreen extends Screen {
 
         selectedLocations.forEach(Point::lightUp);
 
-        SenseHatUtil.waitFor(4000);
+        SenseHatUtil.waitFor(2000);
 
         receivedBombs.forEach(Point::lightUp);
     }
