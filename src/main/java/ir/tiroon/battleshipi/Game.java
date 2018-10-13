@@ -73,8 +73,6 @@ public class Game {
         cleanScreen();
         phase2();
 
-        MQTTUtil.sendGameFinished();
-
         SenseHatUtil.waitFor(4000);
         cleanScreen();
         phase3();
@@ -82,11 +80,13 @@ public class Game {
 
         //Waiting for opponents game to be finished
         //The only scenario that can make this waiting necessary is the time that one of players ask for bomb check and the checker is in phase 4
-        while (!getOpponentsGameFinished()) {
-            System.out.print("*");
-            SenseHatUtil.waitFor(3000);
-            //Todo Maybe showing some message here or nice sound about waiting for others
-        }
+//        while (!getOpponentsGameFinished()) {
+//            System.out.print("*");
+//            SenseHatUtil.waitFor(3000);
+//        }
+
+        MQTTUtil.sendGameFinished();
+
         SenseHatUtil.waitFor(10000);
         cleanScreen();
         phase4();
