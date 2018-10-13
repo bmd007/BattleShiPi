@@ -52,6 +52,11 @@ public class Game {
         cleanScreen();
         phase1();
 
+        //Todo do not allow any one send bomb before phase one finished for both.
+        //      So if one of players is still choosing yellow points, the other player is not allowed to send bomb
+        //          There are some different way to make it possible. iT seems that The easiest way is changing names in the GameFinished procedure
+        //              and wait for other players phase 1 end before starting the current player phase2. Also  it seems that this method is not working,
+        //                  at least didn't worked last time  as GameFinished procedure ( deadlock happens probably ;( ?)
         cleanScreen();
         phase2();
 
