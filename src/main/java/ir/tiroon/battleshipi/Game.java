@@ -74,11 +74,11 @@ public class Game {
         MQTTUtil.sendGameFinished();
 
         //Waiting for opponents game to be finished
-        while (!getOpponentsGameFinished()) {
-            System.out.print("*");
-            SenseHatUtil.waitFor(3000);
-            //Todo Maybe showing some message here or nice sound about waiting for others
-        }
+//        while (!getOpponentsGameFinished()) {
+//            System.out.print("*");
+//            SenseHatUtil.waitFor(3000);
+//            //Todo Maybe showing some message here or nice sound about waiting for others
+//        }
         SenseHatUtil.waitFor(4000);
         cleanScreen();
         phase3();

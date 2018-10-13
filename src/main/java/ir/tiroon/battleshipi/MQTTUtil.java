@@ -21,7 +21,7 @@ public class MQTTUtil {
     public static String advertisePlayer2GameFinishedToPlayer1Topic = "advertisePlayer2GameFinished";
 
     public static ObjectMapper objectMapper = new ObjectMapper();
-    static int qos = 1;
+    static int qos = 2;
     static MemoryPersistence persistence = new MemoryPersistence();
     public static MqttClient mqttClient;
     static String brokerIPAddress;
@@ -61,19 +61,21 @@ public class MQTTUtil {
         }
     }
 
-    public static void sendGameFinished(){
+    public static void sendGameFinished() {
 
-        System.out.println("Game is finishing");
         try {
             MQTTUtil.mqttClient.publish(Main.playerNumber == 1 ? MQTTUtil.advertisePlayer1GameFinishedToPlayer2Topic : MQTTUtil.advertisePlayer2GameFinishedToPlayer1Topic
-                    , new MqttMessage(("Game finished on "+Main.playerNumber+"'s side finished").getBytes(Charset.forName("UTF-8"))));
+                    , new MqttMessage(("Game finished on " + Main.playerNumber + "'s side finished").getBytes(Charset.forName("UTF-8"))));
+
+            System.out.println("Game is finished");
+
         } catch (MqttPersistenceException e) {
             e.printStackTrace();
         } catch (MqttException e) {
             e.printStackTrace();
         }
 
-        System.out.println("Game is finished");
+
     }
 
     public static void sendBomb(Bomb bomb) {
@@ -87,7 +89,7 @@ public class MQTTUtil {
             message.setQos(qos);
             mqttClient.publish(Main.playerNumber == 1 ? MQTTUtil.sendBombToPlayer2Topic : MQTTUtil.sendBombToPlayer1Topic, message);
 
-            System.out.println("Bomb send to:"+ (Main.playerNumber == 1 ? MQTTUtil.sendBombToPlayer2Topic : MQTTUtil.sendBombInfoToPlayer1Topic) +"::"+ message);
+            System.out.println("Bomb send to:" + (Main.playerNumber == 1 ? MQTTUtil.sendBombToPlayer2Topic : MQTTUtil.sendBombInfoToPlayer1Topic) + "::" + message);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         } catch (MqttPersistenceException e) {
