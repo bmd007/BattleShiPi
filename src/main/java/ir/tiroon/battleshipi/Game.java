@@ -48,10 +48,18 @@ public class Game {
 
     public static IMqttMessageListener gameFinishedListener = (topic, message) -> {
         System.out.println(new ObjectMapper().readValue(message.toString(), Boolean.class)+"::Game finished?");
-        opponentsGameFinished = true;
+        setOpponentsGameFinished(true);
     };
 
-///////////////////////////////////////
+    public synchronized static Boolean getOpponentsGameFinished() {
+        return opponentsGameFinished;
+    }
+
+    public synchronized static void setOpponentsGameFinished(Boolean opponentsGameFinished) {
+        Game.opponentsGameFinished = opponentsGameFinished;
+    }
+
+    ///////////////////////////////////////
     public Game() throws MqttException {
 
 
@@ -66,7 +74,8 @@ public class Game {
         MQTTUtil.sendGameFinished();
 
         //Waiting for opponents game to be finished
-        while (!opponentsGameFinished) {
+        while (!getOpponentsGameFinished()) {
+            System.out.print("*");
             SenseHatUtil.waitFor(3000);
             //Todo Maybe showing some message here or nice sound about waiting for others
         }
