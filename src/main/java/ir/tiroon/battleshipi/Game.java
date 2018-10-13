@@ -15,6 +15,9 @@ public class Game {
 
     static volatile int score;
 
+    public static final int numberOfBombsToSend = 3;
+
+    public static final int numberOfOwnPropertiesToSelect = 2;
 
     //Todo: change everything about story of "game finished" to "phase 2 finished"
     static volatile Boolean opponentsGameFinished = false;
@@ -102,7 +105,7 @@ public class Game {
         mapScreen = new MapScreen();
 
         mapScreen.showGlobeSight();
-        while (mapScreen.selectedLocations.size() != 1) SenseHatUtil.waitFor(4000);
+        while (mapScreen.selectedLocations.size() != numberOfOwnPropertiesToSelect) SenseHatUtil.waitFor(4000);
 
         mapScreen.vanishGlobeSight();
         System.out.println("Own Property Point Selection Phase Finished");
@@ -112,7 +115,7 @@ public class Game {
         attackScreen = new AttackScreen();
         attackScreen.showGlobeSight();
 
-        while (attackScreen.selectedLocationsToSendBomb.size() != 1) SenseHatUtil.waitFor(4000);
+        while (attackScreen.selectedLocationsToSendBomb.size() != numberOfBombsToSend) SenseHatUtil.waitFor(4000);
 
         attackScreen.vanishGlobeSight();
         System.out.println("Bomb to Send Point Selection Phase Finished");

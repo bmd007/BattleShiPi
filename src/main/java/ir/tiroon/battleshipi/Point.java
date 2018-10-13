@@ -49,8 +49,9 @@ public class Point implements Runnable {
     }
 
     public void lightUp() {
-        while (blinkingThread.isAlive()) {
-        }
+        if (blinkingThread!=null)
+            while (blinkingThread.isAlive()){}
+
         SenseHatUtil.senseHat.ledMatrix.setPixel(x, y, this.color);
     }
 
