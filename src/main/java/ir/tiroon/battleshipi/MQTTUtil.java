@@ -65,7 +65,7 @@ public class MQTTUtil {
 
         try {
             MQTTUtil.mqttClient.publish(Main.playerNumber == 1 ? MQTTUtil.advertisePlayer1GameFinishedToPlayer2Topic : MQTTUtil.advertisePlayer2GameFinishedToPlayer1Topic
-                    , new MqttMessage(("Game finished on " + Main.playerNumber + "'s side finished").getBytes(Charset.forName("UTF-8"))));
+                    , new MqttMessage(("Game finished").getBytes(Charset.forName("UTF-8"))));
 
             System.out.println("Game is finished");
 

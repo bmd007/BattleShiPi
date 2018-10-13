@@ -7,11 +7,11 @@ import java.util.Set;
 
 public class AttackScreen extends Screen {
 
-    Set<Point> selectedLocationsToSendBomb = new HashSet<>();
+    public Set<Point> selectedLocationsToSendBomb = new HashSet<>();
     //Show them in red
-    Set<Point> successfulBombsLocations = new HashSet<>();
+    public Set<Point> successfulBombsLocations = new HashSet<>();
     //Show them in green
-    Set<Point> waistedBombsLocations = new HashSet<>();
+    public Set<Point> waistedBombsLocations = new HashSet<>();
 
     public AttackScreen() {
         super();
@@ -39,6 +39,7 @@ public class AttackScreen extends Screen {
 
         changeGlobeSightLocationToStart();
     }
+
 
     @Override
     public void reShowUp() {

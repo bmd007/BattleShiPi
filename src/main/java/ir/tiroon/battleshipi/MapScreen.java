@@ -8,8 +8,8 @@ import java.util.Set;
 public class MapScreen extends Screen {
 
     //may only this one should be volite
-    Set<Point> selectedLocations = new HashSet<>();
-    Set<Point> receivedBombs = new HashSet<>();
+    public Set<Point> selectedLocations = new HashSet<>();
+    public Set<Point> receivedBombs = new HashSet<>();
 
     public MapScreen() {
         super();
@@ -19,8 +19,9 @@ public class MapScreen extends Screen {
     public void pointSelected(Point point) {
         point.stopBlinkingAndLightUp(Color.of(255, 255, 0));
         //The copy should be yellow
-
-        selectedLocations.add(new Point(point));
+        Point temp = new Point(point);
+        selectedLocations.add(temp);
+            if (temp == null)System.err.println("WTF WTF");
 
         changeGlobeSightLocationToStart();
     }
